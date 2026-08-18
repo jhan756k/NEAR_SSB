@@ -14,3 +14,4 @@ venv/
 !/dataset/ptbxl/
 !/dataset/qtdb/
 /dataset/**/*
+!/dataset/**/keep.txt
