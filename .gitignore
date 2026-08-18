@@ -8,10 +8,4 @@ venv/
 .DS_Store
 **/.DS_Store
 
-/dataset/*
-!/dataset/
-!/dataset/mitnoise/
-!/dataset/ptbxl/
-!/dataset/qtdb/
-/dataset/**/*
-!/dataset/**/keep.txt
+dataset/
