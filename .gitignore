@@ -1,0 +1,16 @@
+__pycache__/
+**/__pycache__/
+*.py[cod]
+
+venv/
+.venv/
+
+.DS_Store
+**/.DS_Store
+
+/dataset/*
+!/dataset/
+!/dataset/mitnoise/
+!/dataset/ptbxl/
+!/dataset/qtdb/
+/dataset/**/*
