@@ -11,3 +11,5 @@ venv/
 dataset/
 
 requirements.txt
+
+*.pkl
