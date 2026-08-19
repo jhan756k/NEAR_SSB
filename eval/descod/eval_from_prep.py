@@ -34,11 +34,21 @@ def ensure_preprocessed_data(repo_root: Path, qtdb_path: Path, nstdb_path: Path,
 
     qtdb_pkl = prep_dir / "qtdb.pkl"
     nstdb_pkl = prep_dir / "mitnoise.pkl"
+    prep_qtdb_path = prep_dir / "prep_qtdb.py"
+    prep_nstdb_path = prep_dir / "prep_nstdb.py"
 
-    if force or not qtdb_pkl.exists() or not nstdb_pkl.exists():
+    pickles_are_current = (
+        qtdb_pkl.exists()
+        and nstdb_pkl.exists()
+        and qtdb_pkl.stat().st_mtime >= prep_qtdb_path.stat().st_mtime
+        and nstdb_pkl.stat().st_mtime >= prep_nstdb_path.stat().st_mtime
+    )
+
+    if force or not pickles_are_current:
         import sys
 
-        sys.path.insert(0, str(repo_root))
+        if str(repo_root) not in sys.path:
+            sys.path.insert(0, str(repo_root))
         from data_prep.prep_qtdb import prepare as prep_qtdb
         from data_prep.prep_nstdb import prepare as prep_nstdb
 
