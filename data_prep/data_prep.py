@@ -100,3 +100,6 @@ def prepare(noise_version=1, qt_path="dataset/qtdb", nstdb_path="dataset/mitnois
 
     print("Dataset ready to use.")
     return [x_train, y_train, x_test, y_test]
+
+if __name__ == "__main__":
+    prepare(noise_version=1, qt_path="dataset/qtdb", nstdb_path="dataset/mitnoise", output_dir="data_prep")

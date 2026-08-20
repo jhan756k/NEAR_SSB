@@ -2,17 +2,10 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from torchsummary import summary
 from math import log as ln
 
-try:
-    from torchsummary import summary
-except ImportError:
-    summary = None
-
-try:
-    import leaf_audio_pytorch.frontend as frontend
-except ImportError:
-    frontend = None
+#import leaf_audio_pytorch.frontend as frontend
 
 class Conv1d(nn.Conv1d):
     def __init__(self, *args, **kwargs):
@@ -160,9 +153,8 @@ if __name__ == "__main__":
     z = net(x,x,y)
     
     #print(z.shape)
-
-    if summary is not None:
-        summary(net)
+    
+    summary(net)
     
     
     
