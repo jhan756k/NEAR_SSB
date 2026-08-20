@@ -9,3 +9,7 @@ venv/
 **/.DS_Store
 
 dataset/
+
+requirements.txt
+
+*.pkl
