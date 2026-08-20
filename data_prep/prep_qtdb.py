@@ -1,9 +1,17 @@
 import glob
 import math
 import pickle
+import sys
+from pathlib import Path
 import numpy as np
 import wfdb
 from scipy.signal import resample_poly
+
+import sys
+import os
+
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from util.preprocessing import preprocess_signal
 
 def prepare(qt_path="dataset/qtdb", output_path="data_prep/qtdb.pkl"):

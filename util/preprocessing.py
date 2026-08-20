@@ -44,5 +44,5 @@ def preprocess_signal(ecg_signal, fs):
     ecg_signal = remove_powerline_interference(ecg_signal, fs, powerline_freq=60.0)
     ecg_signal = remove_high_frequency_noise(ecg_signal, fs, cutoff=40.0)
     ecg_signal = remove_outliers(ecg_signal, threshold=5.0)
-    ecg_signal = normalize_amplitude(ecg_signal)
+    #ecg_signal = normalize_amplitude(ecg_signal)
     return ecg_signal
