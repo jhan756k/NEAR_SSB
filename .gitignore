@@ -15,3 +15,5 @@ requirements.txt
 *.pkl
 
 checkpoints/
+
+results/

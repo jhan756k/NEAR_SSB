@@ -3,12 +3,13 @@ import numpy as np
 import torch
 import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
+from tqdm.auto import tqdm
 from model import SpectralSBUNet, NoiseSchedule
 from train import ECGDataset
 from data_prep.data_prep import prepare
 
 
-def load_model(ckpt_path, device, sqrt_h_path="data_prep/spectral_h_savgol.npy"):
+def load_model(ckpt_path, device, sqrt_h_path="data_prep/spectral_h.npy"):
     model = SpectralSBUNet(sqrt_h_path=sqrt_h_path).to(device)
     ckpt = torch.load(ckpt_path, map_location=device)
     model.load_state_dict(ckpt["model_state"])
@@ -54,7 +55,8 @@ def run_inference(model, schedule, loader, device, n_steps=50):
     all_clean = []
     all_noisy = []
     all_denoised = []
-    for x1, x0 in loader:
+    progress = tqdm(loader, desc="Inference", unit="batch")
+    for x1, x0 in progress:
         x1 = x1.to(device)
         x0_hat = model.sample(x1, schedule, n_steps=n_steps)
         all_clean.append(x0.numpy())
@@ -70,7 +72,7 @@ def visualize(clean, noisy, denoised, indices, fs=250, output_dir="results"):
     os.makedirs(output_dir, exist_ok=True)
     t = np.arange(clean.shape[-1]) / fs
 
-    for idx in indices:
+    for idx in tqdm(indices, desc="Saving sample plots", unit="sample"):
         fig, axes = plt.subplots(3, 1, figsize=(12, 8), sharex=True)
         fig.suptitle(f"Sample {idx}", fontsize=13)
 
@@ -91,14 +93,14 @@ def visualize(clean, noisy, denoised, indices, fs=250, output_dir="results"):
         save_path = os.path.join(output_dir, f"sample_{idx:05d}.png")
         plt.savefig(save_path, dpi=150)
         plt.close()
-        print(f"saved {save_path}")
+        tqdm.write(f"saved {save_path}")
 
 
 def visualize_overlay(clean, noisy, denoised, indices, fs=250, output_dir="results"):
     os.makedirs(output_dir, exist_ok=True)
     t = np.arange(clean.shape[-1]) / fs
 
-    for idx in indices:
+    for idx in tqdm(indices, desc="Saving overlay plots", unit="sample"):
         fig, axes = plt.subplots(1, 2, figsize=(14, 4), sharex=True)
         fig.suptitle(f"Sample {idx}", fontsize=13)
 
@@ -119,14 +121,14 @@ def visualize_overlay(clean, noisy, denoised, indices, fs=250, output_dir="resul
         save_path = os.path.join(output_dir, f"overlay_{idx:05d}.png")
         plt.savefig(save_path, dpi=150)
         plt.close()
-        print(f"saved {save_path}")
+        tqdm.write(f"saved {save_path}")
 
 
 def evaluate(
     ckpt_path,
-    sqrt_h_path="data_prep/spectral_h_savgol.npy",
-    n_steps=50,
-    batch_size=64,
+    sqrt_h_path="data_prep/spectral_h.npy",
+    n_steps=30,
+    batch_size=32,
     device="cuda",
     visualize_indices=None,
     output_dir="results",
@@ -159,8 +161,8 @@ def evaluate(
 
 if __name__ == "__main__":
     evaluate(
-        ckpt_path="checkpoints/ckpt_epoch0400.pt",
-        n_steps=50,
+        ckpt_path="checkpoints/ckpt_epoch0010.pt",
+        n_steps=1,
         batch_size=64,
         device="cuda",
         visualize_indices=[0, 1, 2, 10, 50, 100],
