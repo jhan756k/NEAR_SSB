@@ -1,7 +1,6 @@
 import pickle
 import numpy as np
-import prep_nstdb
-import prep_qtdb
+from data_prep import prep_nstdb, prep_qtdb
 
 def prepare(noise_version=1, qt_path="dataset/qtdb", nstdb_path="dataset/mitnoise", output_dir="data_prep"):
     print("Getting the Data ready ... ")
