@@ -1,4 +1,10 @@
-from Data_Preparation.data_preparation import Data_Preparation
+from pathlib import Path
+import sys
+
+PROJECT_ROOT = Path(__file__).resolve().parents[2]
+sys.path.append(str(PROJECT_ROOT))
+
+from data_prep.data_prep import prepare
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.signal import hilbert, chirp, stft
@@ -34,19 +40,23 @@ if __name__ == "__main__":
         n_level = []
         
         for n_type in nts:
-            path = "Score-based-ECG-Denoising/config/base.yaml"
-            with open(path, "r") as f:
+            path = "config/base.yaml"
+
+            current_dir = Path(__file__).resolve().parent
+            config_path = current_dir / path
+
+            with open(config_path, "r") as f:
                 config = yaml.safe_load(f)    
             
             base_model = ConditionalModel(config['train']['feats']).to('cuda:0')
             model = DDPM(base_model, config, 'cuda:0')
-            foldername = "Score-based-ECG-Denoising/check_points/noise_type_" + str(n_type) + "/"
-            output_path = foldername + "/model.pth"
+            foldername = current_dir / "check_points" / f"noise_type_{n_type}"
+            output_path = foldername / "model.pth"
             
             model.load_state_dict(torch.load(output_path))
             
             
-            [_, _, X_test, y_test] = Data_Preparation(n_type)
+            [_, _, X_test, y_test] = prepare(noise_version=n_type, qt_path="dataset/qtdb", nstdb_path="dataset/mitnoise", output_dir="data_prep")
             
             X_test = torch.FloatTensor(X_test)
             X_test = X_test.permute(0,2,1)
@@ -58,8 +68,8 @@ if __name__ == "__main__":
             test_set = TensorDataset(y_test, X_test)
             
             test_loader = DataLoader(test_set, batch_size=50, num_workers=0)
-            
-            n_level.append(np.load('rnd_test.npy'))
+
+            n_level.append(np.load(current_dir / 'rnd_test.npy'))
             
             with tqdm(test_loader) as it:
                 for batch_no, (clean_batch, noisy_batch) in enumerate(it, start=1):
@@ -100,27 +110,27 @@ if __name__ == "__main__":
         
         
         segs = [0.2, 0.6, 1.0, 1.5, 2.0]
-        print('******************'+str(shots)+'-shots'+'******************')
-        print('******************ALL******************')
-        print("ssd: ",ssd_total.mean(),'$\pm$',ssd_total.std(),)
-        print("mad: ", mad_total.mean(),'$\pm$',mad_total.std(),)
-        print("prd: ", prd_total.mean(),'$\pm$',prd_total.std(),)
-        print("cos_sim: ", cos_sim_total.mean(),'$\pm$',cos_sim_total.std(),)
-        print("snr_in: ", snr_noise.mean(),'$\pm$',snr_noise.std(),)
-        print("snr_out: ", snr_recon.mean(),'$\pm$',snr_recon.std(),)
-        print("snr_improve: ", snr_improvement.mean(),'$\pm$',snr_improvement.std(),)
+        print('===================='+str(shots)+'-shots'+'====================')
+        print('====================ALL====================')
+        print("ssd: ",ssd_total.mean(),'+/-',ssd_total.std(),)
+        print("mad: ", mad_total.mean(),'+/-',mad_total.std(),)
+        print("prd: ", prd_total.mean(),'+/-',prd_total.std(),)
+        print("cos_sim: ", cos_sim_total.mean(),'+/-',cos_sim_total.std(),)
+        print("snr_in: ", snr_noise.mean(),'+/-',snr_noise.std(),)
+        print("snr_out: ", snr_recon.mean(),'+/-',snr_recon.std(),)
+        print("snr_improve: ", snr_improvement.mean(),'+/-',snr_improvement.std(),)
         
         for idx_seg in range(len(segs) - 1):
             idx = np.argwhere(np.logical_and(n_level>=segs[idx_seg], n_level<=segs[idx_seg+1]))
             
-            print('******************'+str(segs[idx_seg]) +'< noise <'+ str(segs[idx_seg+1])+ '******************')
-            print("ssd: ",ssd_total[idx].mean(),'$\pm$',ssd_total[idx].std(),)
-            print("mad: ", mad_total[idx].mean(),'$\pm$',mad_total[idx].std(),)
-            print("prd: ", prd_total[idx].mean(),'$\pm$',prd_total[idx].std(),)
-            print("cos_sim: ", cos_sim_total[idx].mean(),'$\pm$',cos_sim_total[idx].std(),)
-            print("snr_in: ", snr_noise[idx].mean(),'$\pm$',snr_noise[idx].std(),)
-            print("snr_out: ", snr_recon[idx].mean(),'$\pm$',snr_recon[idx].std(),)
-            print("snr_improve: ", snr_improvement[idx].mean(),'$\pm$',snr_improvement[idx].std(),)
+            print('===================='+str(segs[idx_seg]) +'< noise <'+ str(segs[idx_seg+1])+ '====================')
+            print("ssd: ",ssd_total[idx].mean(),'+/-',ssd_total[idx].std(),)
+            print("mad: ", mad_total[idx].mean(),'+/-',mad_total[idx].std(),)
+            print("prd: ", prd_total[idx].mean(),'+/-',prd_total[idx].std(),)
+            print("cos_sim: ", cos_sim_total[idx].mean(),'+/-',cos_sim_total[idx].std(),)
+            print("snr_in: ", snr_noise[idx].mean(),'+/-',snr_noise[idx].std(),)
+            print("snr_out: ", snr_recon[idx].mean(),'+/-',snr_recon[idx].std(),)
+            print("snr_improve: ", snr_improvement[idx].mean(),'+/-',snr_improvement[idx].std(),)
             
 
         
