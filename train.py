@@ -27,7 +27,7 @@ def train_one_epoch(model, loader, optimizer, schedule, device, eps, epoch, tota
         t = torch.empty(x0.shape[0], device=device).uniform_(eps, 1.0 - eps)
         xt, sigma_t, _ = model.sample_xt(x0, x1, t, schedule)
         score_pred = model(xt, t)
-        target = ((xt - x0) / sigma_t).clamp(-5.0, 5.0)
+        target = ((xt - x0) / sigma_t)
         loss = F.mse_loss(score_pred, target)
         optimizer.zero_grad()
         loss.backward()
@@ -47,7 +47,7 @@ def evaluate(model, loader, schedule, device, eps, epoch, total_epochs):
         t = torch.empty(x0.shape[0], device=device).uniform_(eps, 1.0 - eps)
         xt, sigma_t, _ = model.sample_xt(x0, x1, t, schedule)
         score_pred = model(xt, t)
-        target = (xt - x0) / sigma_t
+        target = ((xt - x0) / sigma_t)
         total_loss += F.mse_loss(score_pred, target).item()
         progress.set_postfix(loss=f"{(total_loss / step):.4f}")
     return total_loss / len(loader)
@@ -66,12 +66,12 @@ def train(
     sigma_max=0.1,
     g_min=1e-6,
     g_max=1.3e-4,
-    n_steps=1000,
-    eps=0.05,
+    n_steps=50,
+    eps=1e-4,
     lr=5e-4,
-    batch_size=32,
+    batch_size=64,
     epochs=10,
-    lr_step=9,
+    lr_step=15,
     lr_gamma=0.1,
     n_inference_steps=50,
     save_every=50,
@@ -126,6 +126,16 @@ def train(
                 "scheduler_state": scheduler.state_dict(),
                 "train_loss": train_loss,
                 "val_loss": val_loss,
+                # Store the exact schedule config used for training so inference
+                # can rebuild an identical NoiseSchedule instead of silently
+                # falling back to NoiseSchedule()'s defaults (which caused a
+                # 10x sigma_max mismatch: 1.0 default vs 0.1 used here).
+                "schedule_config": {
+                    "sigma_max": sigma_max,
+                    "g_min": g_min,
+                    "g_max": g_max,
+                    "num_steps": n_steps,
+                },
             }, ckpt_path)
             tqdm.write(f"saved {ckpt_path}")
 

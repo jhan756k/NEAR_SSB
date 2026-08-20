@@ -211,19 +211,18 @@ class SpectralSBUNet(nn.Module):
         device = x1.device
         timesteps = torch.linspace(1.0 - eps, eps, n_steps, device=device)
         xn = x1.clone()
+
         for i, t_val in enumerate(timesteps):
             t_batch = t_val.expand(B)
             score = self.forward(xn, t_batch)
             sigma_t, _ = schedule.get_sigma(t_batch)
-            x0_pred = (xn - sigma_t * score).clamp(-5.0, 5.0)
+            x0_pred = (xn - sigma_t * score)
+
             if i < n_steps - 1:
                 t_next_batch = timesteps[i + 1].expand(B)
                 sigma_t_next, sigma_bar_t_next = schedule.get_sigma(t_next_batch)
-                s2 = sigma_t_next ** 2
-                sb2 = sigma_bar_t_next ** 2
-                mu = (sb2 * x0_pred + s2 * xn) / (s2 + sb2)
-                std = torch.sqrt(s2 * sb2 / (s2 + sb2))
-                xn = mu + std * self.spectral_sampler.color_noise(torch.randn_like(xn))
+                xn = self.spectral_sampler.sample_xt(x0_pred, x1, sigma_t_next, sigma_bar_t_next)
             else:
                 xn = x0_pred
+                
         return xn

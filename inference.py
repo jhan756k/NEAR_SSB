@@ -9,12 +9,27 @@ from train import ECGDataset
 from data_prep.data_prep import prepare
 
 
-def load_model(ckpt_path, device, sqrt_h_path="data_prep/spectral_h.npy"):
+def load_model_and_schedule(ckpt_path, device, sqrt_h_path="data_prep/spectral_h.npy"):
     model = SpectralSBUNet(sqrt_h_path=sqrt_h_path).to(device)
     ckpt = torch.load(ckpt_path, map_location=device)
     model.load_state_dict(ckpt["model_state"])
     model.eval()
-    return model
+
+    if "schedule_config" in ckpt:
+        schedule = NoiseSchedule(device=str(device), **ckpt["schedule_config"])
+    else:
+        # Old checkpoint saved before schedule_config was tracked. Falling back
+        # to NoiseSchedule() defaults here is exactly what caused the sigma_max
+        # mismatch bug (1.0 vs the 0.1 actually used in train.py) -- so warn
+        # loudly instead of silently producing garbage denoised output.
+        print(
+            "WARNING: checkpoint has no 'schedule_config'. Falling back to "
+            "NoiseSchedule() defaults, which will NOT match training unless "
+            "you pass matching sigma_max/g_min/g_max/num_steps explicitly. "
+            "Re-train (or re-save this checkpoint) to embed schedule_config."
+        )
+        schedule = NoiseSchedule(device=str(device))
+    return model, schedule
 
 
 def compute_metrics(x_clean, x_denoised):
@@ -127,7 +142,7 @@ def visualize_overlay(clean, noisy, denoised, indices, fs=250, output_dir="resul
 def evaluate(
     ckpt_path,
     sqrt_h_path="data_prep/spectral_h.npy",
-    n_steps=30,
+    n_steps=50,
     batch_size=32,
     device="cuda",
     visualize_indices=None,
@@ -135,8 +150,7 @@ def evaluate(
 ):
     device = torch.device(device if torch.cuda.is_available() else "cpu")
 
-    model = load_model(ckpt_path, device, sqrt_h_path)
-    schedule = NoiseSchedule(device=str(device))
+    model, schedule = load_model_and_schedule(ckpt_path, device, sqrt_h_path)
 
     x_train, y_train, x_test, y_test = prepare()
     test_loader = DataLoader(ECGDataset(x_test, y_test), batch_size=batch_size, shuffle=False)
