@@ -27,7 +27,7 @@ def train_one_epoch(model, loader, optimizer, schedule, device, eps, epoch, tota
         t = torch.empty(x0.shape[0], device=device).uniform_(eps, 1.0 - eps)
         xt, sigma_t, _ = model.sample_xt(x0, x1, t, schedule)
         score_pred = model(xt, t)
-        target = (xt - x0) / sigma_t
+        target = ((xt - x0) / sigma_t).clamp(-5.0, 5.0)
         loss = F.mse_loss(score_pred, target)
         optimizer.zero_grad()
         loss.backward()
@@ -63,11 +63,11 @@ def train(
     num_groups=8,
     dropout=0.1,
     sqrt_h_path="data_prep/spectral_h.npy",
-    sigma_max=1.0,
+    sigma_max=0.1,
     g_min=1e-6,
     g_max=1.3e-4,
     n_steps=1000,
-    eps=1e-4,
+    eps=0.05,
     lr=5e-4,
     batch_size=32,
     epochs=10,
