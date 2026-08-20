@@ -1,16 +1,31 @@
+import os
 import pickle
 import numpy as np
 from data_prep import prep_nstdb, prep_qtdb
 
-def prepare(noise_version=1, qt_path="dataset/qtdb", nstdb_path="dataset/mitnoise", output_dir="data_prep"):
+def prepare(
+    noise_version=1,
+    qt_path="dataset/qtdb",
+    nstdb_path="dataset/mitnoise",
+    output_dir="data_prep",
+    force_prep=False,
+):
     print("Getting the Data ready ... ")
     np.random.seed(1234)
+    os.makedirs(output_dir, exist_ok=True)
 
-    qt_output = output_dir.rstrip("/") + "/qtdb.pkl"
-    noise_output = output_dir.rstrip("/") + "/mitnoise.pkl"
+    qt_output = os.path.join(output_dir, "qtdb.pkl")
+    noise_output = os.path.join(output_dir, "mitnoise.pkl")
 
-    prep_qtdb.prepare(qt_path=qt_path, output_path=qt_output)
-    prep_nstdb.prepare(nstdb_path=nstdb_path, output_path=noise_output)
+    if force_prep or not os.path.exists(qt_output):
+        prep_qtdb.prepare(qt_path=qt_path, output_path=qt_output)
+    else:
+        print("Using cached file: " + qt_output)
+
+    if force_prep or not os.path.exists(noise_output):
+        prep_nstdb.prepare(nstdb_path=nstdb_path, output_path=noise_output)
+    else:
+        print("Using cached file: " + noise_output)
 
     with open(qt_output, "rb") as f:
         qtdb = pickle.load(f)
