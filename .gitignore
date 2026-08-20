@@ -13,3 +13,5 @@ dataset/
 requirements.txt
 
 *.pkl
+
+checkpoints/

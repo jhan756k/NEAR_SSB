@@ -2,6 +2,7 @@ import os
 import torch
 import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
+from tqdm.auto import tqdm
 from model import SpectralSBUNet, NoiseSchedule
 from data_prep.data_prep import prepare
 
@@ -16,10 +17,11 @@ class ECGDataset(Dataset):
     def __getitem__(self, idx):
         return self.x[idx], self.y[idx]
 
-def train_one_epoch(model, loader, optimizer, schedule, device, eps):
+def train_one_epoch(model, loader, optimizer, schedule, device, eps, epoch, total_epochs):
     model.train()
     total_loss = 0.0
-    for x1, x0 in loader:
+    progress = tqdm(loader, desc=f"Epoch {epoch:04d}/{total_epochs:04d} [train]", leave=False)
+    for x1, x0 in progress:
         x0 = x0.to(device)
         x1 = x1.to(device)
         t = torch.empty(x0.shape[0], device=device).uniform_(eps, 1.0 - eps)
@@ -31,13 +33,15 @@ def train_one_epoch(model, loader, optimizer, schedule, device, eps):
         loss.backward()
         optimizer.step()
         total_loss += loss.item()
+        progress.set_postfix(loss=f"{loss.item():.4f}")
     return total_loss / len(loader)
 
 @torch.no_grad()
-def evaluate(model, loader, schedule, device, eps):
+def evaluate(model, loader, schedule, device, eps, epoch, total_epochs):
     model.eval()
     total_loss = 0.0
-    for x1, x0 in loader:
+    progress = tqdm(loader, desc=f"Epoch {epoch:04d}/{total_epochs:04d} [val]", leave=False)
+    for step, (x1, x0) in enumerate(progress, start=1):
         x0 = x0.to(device)
         x1 = x1.to(device)
         t = torch.empty(x0.shape[0], device=device).uniform_(eps, 1.0 - eps)
@@ -45,6 +49,7 @@ def evaluate(model, loader, schedule, device, eps):
         score_pred = model(xt, t)
         target = (xt - x0) / sigma_t
         total_loss += F.mse_loss(score_pred, target).item()
+        progress.set_postfix(loss=f"{(total_loss / step):.4f}")
     return total_loss / len(loader)
 
 def train(
@@ -64,9 +69,9 @@ def train(
     n_steps=1000,
     eps=1e-4,
     lr=5e-4,
-    batch_size=16,
-    epochs=400,
-    lr_step=90,
+    batch_size=32,
+    epochs=10,
+    lr_step=9,
     lr_gamma=0.1,
     n_inference_steps=50,
     save_every=50,
@@ -102,12 +107,15 @@ def train(
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=lr_step, gamma=lr_gamma)
 
-    for epoch in range(1, epochs + 1):
-        train_loss = train_one_epoch(model, train_loader, optimizer, schedule, device, eps)
-        val_loss = evaluate(model, test_loader, schedule, device, eps)
+    epoch_progress = tqdm(range(1, epochs + 1), desc="Training", unit="epoch")
+    for epoch in epoch_progress:
+        train_loss = train_one_epoch(model, train_loader, optimizer, schedule, device, eps, epoch, epochs)
+        val_loss = evaluate(model, test_loader, schedule, device, eps, epoch, epochs)
         scheduler.step()
+        current_lr = scheduler.get_last_lr()[0]
 
-        print(f"epoch {epoch:04d} | train {train_loss:.6f} | val {val_loss:.6f} | lr {scheduler.get_last_lr()[0]:.2e}")
+        epoch_progress.set_postfix(train=f"{train_loss:.4f}", val=f"{val_loss:.4f}", lr=f"{current_lr:.2e}")
+        tqdm.write(f"epoch {epoch:04d} | train {train_loss:.6f} | val {val_loss:.6f} | lr {current_lr:.2e}")
 
         if epoch % save_every == 0 or epoch == epochs:
             ckpt_path = os.path.join(output_dir, f"ckpt_epoch{epoch:04d}.pt")
@@ -119,7 +127,7 @@ def train(
                 "train_loss": train_loss,
                 "val_loss": val_loss,
             }, ckpt_path)
-            print(f"saved {ckpt_path}")
+            tqdm.write(f"saved {ckpt_path}")
 
     return model, schedule
 
