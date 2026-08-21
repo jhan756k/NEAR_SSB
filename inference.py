@@ -176,7 +176,7 @@ def evaluate(
 if __name__ == "__main__":
     evaluate(
         ckpt_path="checkpoints/ckpt_epoch0400.pt",
-        n_steps=20,
+        n_steps=50,
         batch_size=64,
         device="cuda",
         visualize_indices=[0, 1, 2, 10, 50, 100],

@@ -63,16 +63,16 @@ def train(
     num_groups=8,
     dropout=0.1,
     sqrt_h_path="data_prep/spectral_h.npy",
-    sigma_max=0.1,
+    sigma_max=1.0,
     g_min=1e-6,
     g_max=1.3e-4,
     n_steps=1000,
     eps=1e-4,
-    lr=5e-4,
-    batch_size=96,
+    lr=1e-3,
+    batch_size=128,
     epochs=400,
     lr_step=90,
-    lr_gamma=0.05,
+    lr_gamma=0.1,
     n_inference_steps=50,
     save_every=50,
     device="cuda",
@@ -107,6 +107,11 @@ def train(
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=lr_step, gamma=lr_gamma)
 
+    # --- Add these variables for early stopping ---
+    best_val_loss = float('inf')
+    patience = 30
+    epochs_no_improve = 0
+
     epoch_progress = tqdm(range(1, epochs + 1), desc="Training", unit="epoch")
     for epoch in epoch_progress:
         train_loss = train_one_epoch(model, train_loader, optimizer, schedule, device, eps, epoch, epochs)
@@ -117,6 +122,14 @@ def train(
         epoch_progress.set_postfix(train=f"{train_loss:.4f}", val=f"{val_loss:.4f}", lr=f"{current_lr:.2e}")
         tqdm.write(f"epoch {epoch:04d} | train {train_loss:.6f} | val {val_loss:.6f} | lr {current_lr:.2e}")
 
+        # --- Early Stopping Logic ---
+        if val_loss < best_val_loss:
+            best_val_loss = val_loss
+            epochs_no_improve = 0
+        else:
+            epochs_no_improve += 1
+
+        # Your original interval saving
         if epoch % save_every == 0 or epoch == epochs:
             ckpt_path = os.path.join(output_dir, f"ckpt_epoch{epoch:04d}.pt")
             torch.save({
@@ -126,10 +139,6 @@ def train(
                 "scheduler_state": scheduler.state_dict(),
                 "train_loss": train_loss,
                 "val_loss": val_loss,
-                # Store the exact schedule config used for training so inference
-                # can rebuild an identical NoiseSchedule instead of silently
-                # falling back to NoiseSchedule()'s defaults (which caused a
-                # 10x sigma_max mismatch: 1.0 default vs 0.1 used here).
                 "schedule_config": {
                     "sigma_max": sigma_max,
                     "g_min": g_min,
@@ -138,6 +147,27 @@ def train(
                 },
             }, ckpt_path)
             tqdm.write(f"saved {ckpt_path}")
+
+        # --- Trigger the Early Stop ---
+        if epochs_no_improve >= patience:
+            tqdm.write(f"\nValidation loss hasn't improved for {patience} epochs. Early stopping!")
+            ckpt_path = os.path.join(output_dir, f"ckpt_epoch{epoch:04d}_early_stop.pt")
+            torch.save({
+                "epoch": epoch,
+                "model_state": model.state_dict(),
+                "optimizer_state": optimizer.state_dict(),
+                "scheduler_state": scheduler.state_dict(),
+                "train_loss": train_loss,
+                "val_loss": val_loss,
+                "schedule_config": {
+                    "sigma_max": sigma_max,
+                    "g_min": g_min,
+                    "g_max": g_max,
+                    "num_steps": n_steps,
+                },
+            }, ckpt_path)
+            tqdm.write(f"saved {ckpt_path}")
+            break  # This exits the training loop immediately
 
     return model, schedule
 
