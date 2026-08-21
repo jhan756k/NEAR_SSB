@@ -63,7 +63,7 @@ def train(
     num_groups=8,
     dropout=0.1,
     sqrt_h_path="data_prep/spectral_h.npy",
-    sigma_max=1.0,
+    sigma_max=0.1,
     g_min=1e-6,
     g_max=1.3e-4,
     n_steps=1000,
@@ -149,9 +149,12 @@ def train(
             tqdm.write(f"saved {ckpt_path}")
 
         # --- Trigger the Early Stop ---
-        if epochs_no_improve >= patience:
-            tqdm.write(f"\nValidation loss hasn't improved for {patience} epochs. Early stopping!")
-            ckpt_path = os.path.join(output_dir, f"ckpt_epoch{epoch:04d}_early_stop.pt")
+        if val_loss < best_val_loss:
+            best_val_loss = val_loss
+            epochs_no_improve = 0
+            
+            # Save the absolute best model
+            best_ckpt_path = os.path.join(output_dir, "ckpt_best.pt")
             torch.save({
                 "epoch": epoch,
                 "model_state": model.state_dict(),
@@ -165,9 +168,21 @@ def train(
                     "g_max": g_max,
                     "num_steps": n_steps,
                 },
-            }, ckpt_path)
+            }, best_ckpt_path)
+            tqdm.write(f"New best val_loss! Saved {best_ckpt_path}")
+        else:
+            epochs_no_improve += 1
+
+        # Original interval saving (optional, good for backups)
+        if epoch % save_every == 0 or epoch == epochs:
+            ckpt_path = os.path.join(output_dir, f"ckpt_epoch{epoch:04d}.pt")
+            # ... (your standard save block here) ...
             tqdm.write(f"saved {ckpt_path}")
-            break  # This exits the training loop immediately
+
+        # Trigger Early Stop
+        if epochs_no_improve >= patience:
+            tqdm.write(f"\nValidation loss hasn't improved for {patience} epochs. Early stopping!")
+            break  # Exit loop. You will use ckpt_best.pt for inference!  # This exits the training loop immediately
 
     return model, schedule
 
