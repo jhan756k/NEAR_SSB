@@ -71,8 +71,8 @@ def train(
     lr=1e-3,
     batch_size=128,
     epochs=400,
-    lr_step=50,
-    lr_gamma=0.5,
+    lr_step=100,
+    lr_gamma=0.1,
     n_inference_steps=50,
     save_every=50,
     device="cuda",
@@ -109,7 +109,7 @@ def train(
 
     # --- Add these variables for early stopping ---
     best_val_loss = float('inf')
-    patience = 30
+    patience = 40
     epochs_no_improve = 0
 
     epoch_progress = tqdm(range(1, epochs + 1), desc="Training", unit="epoch")

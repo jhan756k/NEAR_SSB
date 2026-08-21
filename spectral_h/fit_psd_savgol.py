@@ -18,7 +18,7 @@ def compute_empirical_psd(beats, seg_len=512):
     print(f"Used {count} beats, skipped {skipped} (too short)")
     if count == 0:
         raise ValueError("No valid beats found.")
-    return np.fft.rfftfreq(seg_len, d=1.0 / 250), psd_sum / count
+    return np.fft.rfftfreq(seg_len, d=1.0 / 360), psd_sum / count
 
 
 def fit_psd_anchored_savgol(freqs, h_emp, window=11, polyorder=3, anchor_freq=2.0, blend_width=3.0):

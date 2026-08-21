@@ -35,7 +35,7 @@ class ResBlock(nn.Module):
         self.norm1 = nn.GroupNorm(num_groups, in_channels)
         self.conv1 = nn.Conv1d(in_channels, out_channels, 3, padding=1)
         self.t_proj = nn.Sequential(nn.SiLU(), nn.Linear(t_emb_dim, out_channels * 2))
-        self.norm2 = nn.GroupNorm(num_groups, out_channels)
+        self.norm2 = nn.GroupNorm(num_groups, out_channels, affine=False)
         self.dropout = nn.Dropout(dropout)
         self.conv2 = nn.Conv1d(out_channels, out_channels, 3, padding=1)
         self.skip = nn.Conv1d(in_channels, out_channels, 1) if in_channels != out_channels else nn.Identity()
@@ -53,9 +53,12 @@ class AttentionBlock(nn.Module):
         self.norm = nn.GroupNorm(num_groups, channels)
         self.attn = nn.MultiheadAttention(channels, num_heads, batch_first=True)
         self.proj_out = nn.Conv1d(channels, channels, 1)
+        self.pos_embed = nn.Parameter(torch.randn(1, 512, channels) * 0.02)
 
     def forward(self, x):
         h = self.norm(x).permute(0, 2, 1)
+        L = h.shape[1]
+        h = h + self.pos_embed[:, :L, :]
         h, _ = self.attn(h, h, h)
         return x + self.proj_out(h.permute(0, 2, 1))
 
@@ -216,12 +219,16 @@ class SpectralSBUNet(nn.Module):
             t_batch = t_val.expand(B)
             score = self.forward(xn, t_batch)
             sigma_t, _ = schedule.get_sigma(t_batch)
-            x0_pred = (xn - sigma_t * score)
+            x0_pred = xn - sigma_t**2 * score
 
             if i < n_steps - 1:
-                t_next_batch = timesteps[i + 1].expand(B)
-                sigma_t_next, sigma_bar_t_next = schedule.get_sigma(t_next_batch)
-                xn = self.spectral_sampler.sample_xt(x0_pred, x1, sigma_t_next, sigma_bar_t_next)
+                t_next = timesteps[i + 1].expand(B)
+                sigma_next, sigma_bar_next = schedule.get_sigma(t_next)
+                
+                # Linear Bridge mean without re-injecting full noise variance
+                w_x0 = sigma_bar_next**2 / (sigma_next**2 + sigma_bar_next**2)
+                w_x1 = sigma_next**2 / (sigma_next**2 + sigma_bar_next**2)
+                xn = w_x0 * x0_pred + w_x1 * x1
             else:
                 xn = x0_pred
                 

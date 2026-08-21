@@ -1,9 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def plot(freqs_path="data_prep/spectral_h_savgol_freqs.npy",
-         emp_path="data_prep/spectral_h_savgol_emp.npy",
-         smooth_path="data_prep/spectral_h_savgol.npy",
+def plot(freqs_path="data_prep/spectral_h_freqs.npy",
+         emp_path="data_prep/spectral_h_emp.npy",
+         smooth_path="data_prep/spectral_h.npy",
          output_path="data_prep/psd_fit.png"):
 
     freqs = np.load(freqs_path)
