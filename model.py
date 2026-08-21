@@ -216,20 +216,12 @@ class SpectralSBUNet(nn.Module):
             t_batch = t_val.expand(B)
             score = self.forward(xn, t_batch)
             sigma_t, _ = schedule.get_sigma(t_batch)
-            
-            # Predict the clean signal (x0_hat)
             x0_pred = (xn - sigma_t * score)
 
             if i < n_steps - 1:
                 t_next_batch = timesteps[i + 1].expand(B)
                 sigma_t_next, sigma_bar_t_next = schedule.get_sigma(t_next_batch)
-                
-                # DDIM-style deterministic step: Interpolate towards predicted x0
-                s2_next = sigma_t_next ** 2
-                sb2_next = sigma_bar_t_next ** 2
-                
-                # Move xn deterministically along the mean trajectory
-                xn = (sb2_next * x0_pred + s2_next * x1) / (s2_next + sb2_next)
+                xn = self.spectral_sampler.sample_xt(x0_pred, x1, sigma_t_next, sigma_bar_t_next)
             else:
                 xn = x0_pred
                 

@@ -71,8 +71,8 @@ def train(
     lr=1e-3,
     batch_size=128,
     epochs=400,
-    lr_step=90,
-    lr_gamma=0.1,
+    lr_step=50,
+    lr_gamma=0.5,
     n_inference_steps=50,
     save_every=50,
     device="cuda",
@@ -122,38 +122,12 @@ def train(
         epoch_progress.set_postfix(train=f"{train_loss:.4f}", val=f"{val_loss:.4f}", lr=f"{current_lr:.2e}")
         tqdm.write(f"epoch {epoch:04d} | train {train_loss:.6f} | val {val_loss:.6f} | lr {current_lr:.2e}")
 
-        # --- Early Stopping Logic ---
-        if val_loss < best_val_loss:
-            best_val_loss = val_loss
-            epochs_no_improve = 0
-        else:
-            epochs_no_improve += 1
-
-        # Your original interval saving
-        if epoch % save_every == 0 or epoch == epochs:
-            ckpt_path = os.path.join(output_dir, f"ckpt_epoch{epoch:04d}.pt")
-            torch.save({
-                "epoch": epoch,
-                "model_state": model.state_dict(),
-                "optimizer_state": optimizer.state_dict(),
-                "scheduler_state": scheduler.state_dict(),
-                "train_loss": train_loss,
-                "val_loss": val_loss,
-                "schedule_config": {
-                    "sigma_max": sigma_max,
-                    "g_min": g_min,
-                    "g_max": g_max,
-                    "num_steps": n_steps,
-                },
-            }, ckpt_path)
-            tqdm.write(f"saved {ckpt_path}")
-
-        # --- Trigger the Early Stop ---
+        # --- Consolidated Early Stopping & Saving Logic ---
         if val_loss < best_val_loss:
             best_val_loss = val_loss
             epochs_no_improve = 0
             
-            # Save the absolute best model
+            # Save the absolute best model immediately
             best_ckpt_path = os.path.join(output_dir, "ckpt_best.pt")
             torch.save({
                 "epoch": epoch,
@@ -176,14 +150,32 @@ def train(
         # Original interval saving (optional, good for backups)
         if epoch % save_every == 0 or epoch == epochs:
             ckpt_path = os.path.join(output_dir, f"ckpt_epoch{epoch:04d}.pt")
-            # ... (your standard save block here) ...
+            torch.save({
+                "epoch": epoch,
+                "model_state": model.state_dict(),
+                "optimizer_state": optimizer.state_dict(),
+                "scheduler_state": scheduler.state_dict(),
+                "train_loss": train_loss,
+                "val_loss": val_loss,
+                "schedule_config": {
+                    "sigma_max": sigma_max,
+                    "g_min": g_min,
+                    "g_max": g_max,
+                    "num_steps": n_steps,
+                },
+            }, ckpt_path)
             tqdm.write(f"saved {ckpt_path}")
 
         # Trigger Early Stop
         if epochs_no_improve >= patience:
             tqdm.write(f"\nValidation loss hasn't improved for {patience} epochs. Early stopping!")
-            break  # Exit loop. You will use ckpt_best.pt for inference!  # This exits the training loop immediately
+            break  # Exit loop. You will use ckpt_best.pt for inference!
 
+    best_ckpt_path = os.path.join(output_dir, "ckpt_best.pt")
+    if os.path.exists(best_ckpt_path):
+        best_ckpt = torch.load(best_ckpt_path, map_location=device) # Actually load the file
+        model.load_state_dict(best_ckpt["model_state"])
+        
     return model, schedule
 
 if __name__ == "__main__":

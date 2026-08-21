@@ -175,7 +175,7 @@ def evaluate(
 
 if __name__ == "__main__":
     evaluate(
-        ckpt_path="checkpoints/ckpt_best.pt",
+        ckpt_path="checkpoints/ckpt_epoch0050.pt",
         n_steps=50,
         batch_size=128,
         device="cuda",
