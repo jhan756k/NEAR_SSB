@@ -15,7 +15,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from util.preprocessing import preprocess_signal
 
 def prepare(qt_path="dataset/qtdb", output_path="data_prep/qtdb.pkl"):
-    new_fs = 360
+    new_fs = 250
     record_paths = glob.glob(qt_path.rstrip("/") + "/*.dat")
     qtdb_signals = {}
 
