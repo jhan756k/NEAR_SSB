@@ -224,21 +224,42 @@ class SpectralSBUNet(nn.Module):
             '''
             x0_pred = self.forward(xn, t_batch)
             
+            '''
+            if i < n_steps - 1:
+                t_next = timesteps[i + 1].expand(B)
+                sigma_next, sigma_bar_next = schedule.get_sigma(t_next)
+                            
+                w_x0 = sigma_bar_next**2 / (sigma_next**2 + sigma_bar_next**2)
+                w_x1 = sigma_next**2 / (sigma_next**2 + sigma_bar_next**2)
+                mu = w_x0 * x0_pred + w_x1 * x1
+            
+                std = torch.sqrt(sigma_next**2 * sigma_bar_next**2 / (sigma_next**2 + sigma_bar_next**2))
+            
+                noise = self.spectral_sampler.color_noise(torch.randn_like(xn))
+                xn = mu + std * noise
+                            
+            else:
+                xn = x0_pred
+            '''
+            sigma_t, sigma_bar_t = schedule.get_sigma(t_batch)
 
             if i < n_steps - 1:
                 t_next = timesteps[i + 1].expand(B)
                 sigma_next, sigma_bar_next = schedule.get_sigma(t_next)
+
+                s2_t = sigma_t**2
+                s2_s = sigma_next**2
                 
-                w_x0 = sigma_bar_next**2 / (sigma_next**2 + sigma_bar_next**2)
-                w_x1 = sigma_next**2 / (sigma_next**2 + sigma_bar_next**2)
-                mu = w_x0 * x0_pred + w_x1 * x1
-
-                std = torch.sqrt(sigma_next**2 * sigma_bar_next**2 / (sigma_next**2 + sigma_bar_next**2))
-
+                w_x0 = (s2_t - s2_s) / s2_t
+                w_xt = s2_s / s2_t
+                mean = w_x0 * x0_pred + w_xt * xn
+                
+                std = torch.sqrt(s2_s * (s2_t - s2_s) / s2_t)
+                
                 noise = self.spectral_sampler.color_noise(torch.randn_like(xn))
-                xn = mu + std * noise
-                
+                xn = mean + std * noise
+
             else:
                 xn = x0_pred
-                
+            
         return xn
