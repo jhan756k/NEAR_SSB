@@ -158,7 +158,7 @@ class SpectralSBUNet(nn.Module):
         self.spectral_sampler = SpectralNoiseSampler(sqrt_h)
         self.t_embedding = TimestepEmbedding(t_emb_dim)
         t_emb_full = t_emb_dim * 4
-        self.input_proj = nn.Conv1d(1, base_channels, 3, padding=1)
+        self.input_proj = nn.Conv1d(2, base_channels, 3, padding=1)
 
         self.encoder_blocks = nn.ModuleList()
         in_ch = base_channels
@@ -192,9 +192,10 @@ class SpectralSBUNet(nn.Module):
             nn.Conv1d(in_ch, 1, 3, padding=1),
         )
 
-    def forward(self, x, t):
+    def forward(self, x, x1, t):
         t_emb = self.t_embedding(t)
-        x = self.input_proj(x)
+        x_in = torch.cat([x, x1], dim=1)
+        x = self.input_proj(x_in)
         skips = []
         for enc in self.encoder_blocks:
             skip, x = enc(x, t_emb)

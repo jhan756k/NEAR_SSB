@@ -134,7 +134,7 @@ def visualize_overlay(clean, noisy, denoised, indices, fs=250, output_dir="resul
 
         plt.tight_layout()
         save_path = os.path.join(output_dir, f"overlay_{idx:05d}.png")
-        plt.savefig(save_path, dpi=150)
+        plt.savefig(save_path, dpi=300)
         plt.close()
         tqdm.write(f"saved {save_path}")
 

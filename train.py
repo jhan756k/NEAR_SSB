@@ -3,6 +3,7 @@ import torch
 import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
 from tqdm.auto import tqdm
+from sklearn.model_selection import train_test_split
 from model import SpectralSBUNet, NoiseSchedule
 from data_prep.data_prep import prepare
 
@@ -31,7 +32,7 @@ def train_one_epoch(model, loader, optimizer, schedule, device, eps, epoch, tota
         target = ((xt - x0) / sigma_t)
         loss = F.mse_loss(score_pred, target)
         '''
-        x0_pred = model(xt, t)
+        x0_pred = model(xt, x1, t)
         loss = F.mse_loss(x0_pred, x0)
 
         optimizer.zero_grad()
@@ -56,7 +57,7 @@ def evaluate(model, loader, schedule, device, eps, epoch, total_epochs):
         target = ((xt - x0) / sigma_t)
         total_loss += F.mse_loss(score_pred, target).item()
         '''
-        x0_pred = model(xt, t)
+        x0_pred = model(xt, x1, t)
         total_loss += F.mse_loss(x0_pred, x0).item()
 
         progress.set_postfix(loss=f"{(total_loss / step):.4f}")
@@ -89,10 +90,12 @@ def train(
     os.makedirs(output_dir, exist_ok=True)
     device = torch.device(device if torch.cuda.is_available() else "cpu")
     
-    x_train, y_train, x_test, y_test = prepare()
+    x_train_full, y_train_full, x_test, y_test = prepare()
+
+    x_train, y_train, x_val, y_val = train_test_split(x_train_full, y_train_full, test_size=0.3, random_state=42)
 
     train_loader = DataLoader(ECGDataset(x_train, y_train), batch_size=batch_size, shuffle=True)
-    test_loader = DataLoader(ECGDataset(x_test, y_test), batch_size=batch_size, shuffle=False)
+    val_loader = DataLoader(ECGDataset(x_val, y_val), batch_size=batch_size, shuffle=False)
 
     model = SpectralSBUNet(
         seg_len=seg_len,
@@ -128,7 +131,7 @@ def train(
     epoch_progress = tqdm(range(1, epochs + 1), desc="Training", unit="epoch")
     for epoch in epoch_progress:
         train_loss = train_one_epoch(model, train_loader, optimizer, schedule, device, eps, epoch, epochs)
-        val_loss = evaluate(model, test_loader, schedule, device, eps, epoch, epochs)
+        val_loss = evaluate(model, val_loader, schedule, device, eps, epoch, epochs)
         scheduler.step()
         current_lr = scheduler.get_last_lr()[0]
 
