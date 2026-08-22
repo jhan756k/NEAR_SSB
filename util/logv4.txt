@@ -1,0 +1,129 @@
+epoch 0001 | train 304.533326 | val 40.729930 | lr 1.00e-03
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0002 | train 140.344222 | val 31.442101 | lr 1.00e-03
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0003 | train 109.793650 | val 46.632389 | lr 1.00e-03
+epoch 0004 | train 91.872885 | val 14.229104 | lr 1.00e-03
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0005 | train 70.610246 | val 37.625293 | lr 1.00e-03
+epoch 0006 | train 66.348209 | val 20.383200 | lr 1.00e-03
+epoch 0007 | train 60.230358 | val 19.314372 | lr 1.00e-03
+epoch 0008 | train 44.569618 | val 11.296258 | lr 1.00e-03
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0009 | train 46.409928 | val 12.300833 | lr 1.00e-03
+epoch 0010 | train 36.748598 | val 9.801532 | lr 1.00e-03
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0011 | train 35.358017 | val 56.752031 | lr 1.00e-03
+epoch 0012 | train 62.620681 | val 15.346764 | lr 1.00e-03
+epoch 0013 | train 34.834022 | val 10.051347 | lr 1.00e-03
+epoch 0014 | train 31.465222 | val 7.853785 | lr 1.00e-03
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0015 | train 31.567312 | val 31.234550 | lr 1.00e-03
+epoch 0016 | train 35.911666 | val 20.382612 | lr 1.00e-03
+epoch 0017 | train 26.427835 | val 10.379580 | lr 1.00e-03
+epoch 0018 | train 22.283855 | val 10.382300 | lr 1.00e-03
+epoch 0019 | train 26.817143 | val 8.881712 | lr 1.00e-03
+epoch 0020 | train 22.840399 | val 8.271292 | lr 1.00e-03
+epoch 0021 | train 27.136719 | val 7.120337 | lr 1.00e-03
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0022 | train 17.266757 | val 7.287748 | lr 1.00e-03
+epoch 0023 | train 25.567013 | val 11.593038 | lr 1.00e-03
+epoch 0024 | train 21.596233 | val 8.588078 | lr 1.00e-03
+epoch 0025 | train 16.898921 | val 10.507109 | lr 1.00e-03
+epoch 0026 | train 21.522292 | val 6.890897 | lr 1.00e-03
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0027 | train 32.896800 | val 19.493009 | lr 1.00e-03
+epoch 0028 | train 25.386544 | val 7.742347 | lr 1.00e-03
+epoch 0029 | train 21.279863 | val 7.669337 | lr 1.00e-03
+epoch 0030 | train 17.262662 | val 11.210726 | lr 1.00e-03
+epoch 0031 | train 17.735738 | val 23.180945 | lr 1.00e-03
+epoch 0032 | train 16.410751 | val 6.427488 | lr 1.00e-03
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0033 | train 17.659073 | val 7.153884 | lr 1.00e-03
+epoch 0034 | train 29.155132 | val 9.486510 | lr 1.00e-03
+epoch 0035 | train 15.940387 | val 5.685585 | lr 1.00e-03
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0036 | train 22.882992 | val 7.009819 | lr 1.00e-03
+epoch 0037 | train 12.883058 | val 5.812330 | lr 1.00e-03
+epoch 0038 | train 12.620120 | val 5.076767 | lr 1.00e-03
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0039 | train 30.901241 | val 7.942966 | lr 1.00e-03
+epoch 0040 | train 18.878501 | val 5.595129 | lr 1.00e-03
+epoch 0041 | train 11.927610 | val 8.079884 | lr 1.00e-03
+epoch 0042 | train 10.819293 | val 4.503699 | lr 1.00e-03
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0043 | train 12.358356 | val 7.711040 | lr 1.00e-03
+epoch 0044 | train 25.621709 | val 11.571327 | lr 1.00e-03
+epoch 0045 | train 11.423714 | val 4.742436 | lr 1.00e-03
+epoch 0046 | train 22.532078 | val 4.550051 | lr 1.00e-03
+epoch 0047 | train 10.559543 | val 3.847599 | lr 1.00e-03
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0048 | train 16.730362 | val 6.450003 | lr 1.00e-03
+epoch 0049 | train 9.311751 | val 4.339225 | lr 1.00e-03
+epoch 0050 | train 14.421397 | val 12.489916 | lr 1.00e-03
+saved checkpoints\ckpt_epoch0050.pt
+epoch 0051 | train 9.777677 | val 5.103532 | lr 1.00e-03
+epoch 0052 | train 19.679920 | val 6.051128 | lr 1.00e-03
+epoch 0053 | train 20.010921 | val 4.911944 | lr 1.00e-03
+epoch 0054 | train 9.236918 | val 12.673514 | lr 1.00e-03
+epoch 0055 | train 12.195615 | val 3.843607 | lr 1.00e-03
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0056 | train 10.100936 | val 9.289303 | lr 1.00e-03
+epoch 0057 | train 14.074404 | val 4.891927 | lr 1.00e-03
+epoch 0058 | train 14.955440 | val 5.007169 | lr 1.00e-03
+epoch 0059 | train 10.059554 | val 4.152836 | lr 1.00e-03
+epoch 0060 | train 9.719054 | val 3.960943 | lr 1.00e-03
+epoch 0061 | train 6.796960 | val 4.931536 | lr 1.00e-03
+epoch 0062 | train 7.960184 | val 3.258806 | lr 1.00e-03
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0063 | train 5.822991 | val 2.999206 | lr 1.00e-03
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0064 | train 6.499746 | val 6.844341 | lr 1.00e-03
+epoch 0065 | train 9.399297 | val 3.379706 | lr 1.00e-03
+epoch 0066 | train 7.707819 | val 3.020480 | lr 1.00e-03
+epoch 0067 | train 13.076285 | val 4.435556 | lr 1.00e-03
+epoch 0068 | train 7.742603 | val 3.313434 | lr 1.00e-03
+epoch 0069 | train 7.118262 | val 4.956520 | lr 1.00e-03
+epoch 0070 | train 6.826012 | val 2.843190 | lr 1.00e-03
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0071 | train 7.095966 | val 5.755310 | lr 1.00e-03
+epoch 0072 | train 8.716994 | val 3.038687 | lr 1.00e-03
+epoch 0073 | train 6.551154 | val 3.362041 | lr 1.00e-03
+epoch 0074 | train 5.514560 | val 2.935907 | lr 1.00e-03
+epoch 0075 | train 6.279914 | val 2.889489 | lr 1.00e-03
+epoch 0076 | train 8.086278 | val 3.768378 | lr 1.00e-03
+epoch 0077 | train 52.684826 | val 6.509072 | lr 1.00e-03
+epoch 0078 | train 25.082710 | val 5.533055 | lr 1.00e-03
+epoch 0079 | train 79.522489 | val 40.135696 | lr 1.00e-03
+epoch 0080 | train 37.684750 | val 5.339943 | lr 1.00e-03
+epoch 0081 | train 11.686697 | val 5.561851 | lr 1.00e-03
+epoch 0082 | train 7.277901 | val 3.503011 | lr 1.00e-03
+epoch 0083 | train 13.538937 | val 3.818637 | lr 1.00e-03
+epoch 0084 | train 5.926974 | val 3.833530 | lr 1.00e-03
+epoch 0085 | train 16.598924 | val 3.665575 | lr 1.00e-03
+epoch 0086 | train 23.519769 | val 3.371939 | lr 1.00e-03
+epoch 0087 | train 10.922101 | val 3.417792 | lr 1.00e-03
+epoch 0088 | train 5.864253 | val 3.292127 | lr 1.00e-03
+epoch 0089 | train 8.439083 | val 4.783507 | lr 1.00e-03
+epoch 0090 | train 9.086599 | val 4.729640 | lr 1.00e-03
+epoch 0091 | train 14.472205 | val 3.509885 | lr 1.00e-03
+epoch 0092 | train 43.782835 | val 37.315773 | lr 1.00e-03
+epoch 0093 | train 74.591589 | val 7.294127 | lr 1.00e-03
+epoch 0094 | train 106.911516 | val 10.456495 | lr 1.00e-03
+epoch 0095 | train 125.732142 | val 16.388478 | lr 1.00e-03
+epoch 0096 | train 149.535534 | val 12.572558 | lr 1.00e-03
+epoch 0097 | train 149.728008 | val 47.927215 | lr 1.00e-03
+epoch 0098 | train 233.670207 | val 104.247026 | lr 1.00e-03
+epoch 0099 | train 298.001908 | val 162.429662 | lr 1.00e-03
+epoch 0100 | train 402.004785 | val 221.875697 | lr 1.00e-04
+saved checkpoints\ckpt_epoch0100.pt
+epoch 0101 | train 421.509682 | val 221.647865 | lr 1.00e-04
+epoch 0102 | train 421.352420 | val 215.106211 | lr 1.00e-04
+epoch 0103 | train 422.638255 | val 206.260871 | lr 1.00e-04
+epoch 0104 | train 393.393706 | val 187.960174 | lr 1.00e-04
+epoch 0105 | train 389.719054 | val 188.010202 | lr 1.00e-04
+epoch 0106 | train 397.549191 | val 219.184646 | lr 1.00e-04
+epoch 0107 | train 431.737063 | val 223.770854 | lr 1.00e-04
+epoch 0108 | train 330.032835 | val 61.509887 | lr 1.00e-04
+epoch 0109 | train 131.216690 | val 12.190558 | lr 1.00e-04
+epoch 0110 | train 95.031484 | val 7.144699 | lr 1.00e-04

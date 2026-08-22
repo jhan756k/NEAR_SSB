@@ -1,0 +1,131 @@
+epoch 0001 | train 0.010222 | val 0.003618 | lr 1.00e-03
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0002 | train 0.003655 | val 0.003488 | lr 1.00e-03
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0003 | train 0.002995 | val 0.003291 | lr 1.00e-03
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0004 | train 0.002867 | val 0.003125 | lr 1.00e-03
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0005 | train 0.002625 | val 0.003073 | lr 1.00e-03
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0006 | train 0.024902 | val 0.014913 | lr 9.99e-04
+epoch 0007 | train 0.012658 | val 0.007682 | lr 9.99e-04
+epoch 0008 | train 0.008507 | val 0.006295 | lr 9.99e-04
+epoch 0009 | train 0.006624 | val 0.005200 | lr 9.99e-04
+epoch 0010 | train 0.006250 | val 0.004760 | lr 9.98e-04
+epoch 0011 | train 0.005606 | val 0.004566 | lr 9.98e-04
+epoch 0012 | train 0.005919 | val 0.004616 | lr 9.98e-04
+epoch 0013 | train 0.005176 | val 0.004172 | lr 9.97e-04
+epoch 0014 | train 0.004867 | val 0.004126 | lr 9.97e-04
+epoch 0015 | train 0.004192 | val 0.003701 | lr 9.97e-04
+epoch 0016 | train 0.004844 | val 0.003327 | lr 9.96e-04
+epoch 0017 | train 0.004070 | val 0.004511 | lr 9.96e-04
+epoch 0018 | train 0.003740 | val 0.003673 | lr 9.95e-04
+epoch 0019 | train 0.003793 | val 0.003384 | lr 9.94e-04
+epoch 0020 | train 0.003380 | val 0.004240 | lr 9.94e-04
+epoch 0021 | train 0.003706 | val 0.002933 | lr 9.93e-04
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0022 | train 0.003366 | val 0.003218 | lr 9.93e-04
+epoch 0023 | train 0.002937 | val 0.003089 | lr 9.92e-04
+epoch 0024 | train 0.003116 | val 0.002802 | lr 9.91e-04
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0025 | train 0.002884 | val 0.003450 | lr 9.90e-04
+epoch 0026 | train 0.003252 | val 0.003784 | lr 9.90e-04
+epoch 0027 | train 0.003299 | val 0.002723 | lr 9.89e-04
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0028 | train 0.002676 | val 0.002647 | lr 9.88e-04
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0029 | train 0.002745 | val 0.002865 | lr 9.87e-04
+epoch 0030 | train 0.002543 | val 0.002869 | lr 9.86e-04
+epoch 0031 | train 0.002456 | val 0.002867 | lr 9.85e-04
+epoch 0032 | train 0.002384 | val 0.002825 | lr 9.84e-04
+epoch 0033 | train 0.002401 | val 0.002946 | lr 9.83e-04
+epoch 0034 | train 0.002448 | val 0.003407 | lr 9.82e-04
+epoch 0035 | train 0.002472 | val 0.002860 | lr 9.81e-04
+epoch 0036 | train 0.002234 | val 0.002800 | lr 9.80e-04
+epoch 0037 | train 0.002171 | val 0.002855 | lr 9.79e-04
+epoch 0038 | train 0.002199 | val 0.002937 | lr 9.78e-04
+epoch 0039 | train 0.002129 | val 0.002794 | lr 9.77e-04
+epoch 0040 | train 0.002128 | val 0.002644 | lr 9.76e-04
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0041 | train 0.002104 | val 0.002880 | lr 9.74e-04
+epoch 0042 | train 0.001941 | val 0.003109 | lr 9.73e-04
+epoch 0043 | train 0.001946 | val 0.002638 | lr 9.72e-04
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0044 | train 0.001921 | val 0.002825 | lr 9.70e-04
+epoch 0045 | train 0.001815 | val 0.002828 | lr 9.69e-04
+epoch 0046 | train 0.001943 | val 0.002405 | lr 9.68e-04
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0047 | train 0.001859 | val 0.002596 | lr 9.66e-04
+epoch 0048 | train 0.002077 | val 0.002703 | lr 9.65e-04
+epoch 0049 | train 0.002200 | val 0.003073 | lr 9.63e-04
+epoch 0050 | train 0.002007 | val 0.002703 | lr 9.62e-04
+saved checkpoints\ckpt_epoch0050.pt
+epoch 0051 | train 0.001853 | val 0.002504 | lr 9.60e-04
+epoch 0052 | train 0.001718 | val 0.002418 | lr 9.59e-04
+epoch 0053 | train 0.001861 | val 0.002529 | lr 9.57e-04
+epoch 0054 | train 0.001774 | val 0.002509 | lr 9.56e-04
+epoch 0055 | train 0.001976 | val 0.002543 | lr 9.54e-04
+epoch 0056 | train 0.001665 | val 0.002760 | lr 9.52e-04
+epoch 0057 | train 0.001656 | val 0.002564 | lr 9.51e-04
+epoch 0058 | train 0.001587 | val 0.002548 | lr 9.49e-04
+epoch 0059 | train 0.001751 | val 0.002710 | lr 9.47e-04
+epoch 0060 | train 0.001884 | val 0.002683 | lr 9.46e-04
+epoch 0061 | train 0.001819 | val 0.002976 | lr 9.44e-04
+epoch 0062 | train 0.001898 | val 0.003839 | lr 9.42e-04
+epoch 0063 | train 0.002074 | val 0.003046 | lr 9.40e-04
+epoch 0064 | train 0.002112 | val 0.002580 | lr 9.38e-04
+epoch 0065 | train 0.001718 | val 0.002843 | lr 9.36e-04
+epoch 0066 | train 0.001641 | val 0.002731 | lr 9.34e-04
+epoch 0067 | train 0.001626 | val 0.002561 | lr 9.32e-04
+epoch 0068 | train 0.001711 | val 0.002893 | lr 9.30e-04
+epoch 0069 | train 0.001539 | val 0.002663 | lr 9.28e-04
+epoch 0070 | train 0.001531 | val 0.002669 | lr 9.26e-04
+epoch 0071 | train 0.001518 | val 0.002540 | lr 9.24e-04
+epoch 0072 | train 0.001457 | val 0.002705 | lr 9.22e-04
+epoch 0073 | train 0.001477 | val 0.002796 | lr 9.20e-04
+epoch 0074 | train 0.001471 | val 0.002673 | lr 9.18e-04
+epoch 0075 | train 0.001566 | val 0.004253 | lr 9.16e-04
+epoch 0076 | train 0.001796 | val 0.002353 | lr 9.14e-04
+New best val_loss! Saved checkpoints\ckpt_best.pt
+epoch 0077 | train 0.001611 | val 0.002629 | lr 9.11e-04                                                                                                                                                                                 
+epoch 0078 | train 0.001420 | val 0.002538 | lr 9.09e-04
+epoch 0079 | train 0.001365 | val 0.002802 | lr 9.07e-04
+epoch 0080 | train 0.001380 | val 0.002741 | lr 9.05e-04
+epoch 0081 | train 0.001364 | val 0.002897 | lr 9.02e-04
+epoch 0082 | train 0.001414 | val 0.002681 | lr 9.00e-04
+epoch 0083 | train 0.001402 | val 0.002551 | lr 8.98e-04
+epoch 0084 | train 0.001361 | val 0.002581 | lr 8.95e-04
+epoch 0085 | train 0.001483 | val 0.002720 | lr 8.93e-04
+epoch 0086 | train 0.001291 | val 0.002512 | lr 8.90e-04
+epoch 0087 | train 0.001257 | val 0.002457 | lr 8.88e-04
+epoch 0088 | train 0.001287 | val 0.002649 | lr 8.85e-04
+epoch 0089 | train 0.001311 | val 0.002676 | lr 8.83e-04
+epoch 0090 | train 0.001435 | val 0.002735 | lr 8.80e-04
+epoch 0091 | train 0.001209 | val 0.002594 | lr 8.78e-04
+epoch 0092 | train 0.001206 | val 0.002782 | lr 8.75e-04
+epoch 0093 | train 0.001150 | val 0.002943 | lr 8.73e-04
+epoch 0094 | train 0.001242 | val 0.003703 | lr 8.70e-04
+epoch 0095 | train 0.001201 | val 0.002657 | lr 8.67e-04
+epoch 0096 | train 0.001205 | val 0.002875 | lr 8.65e-04
+epoch 0097 | train 0.001137 | val 0.002737 | lr 8.62e-04
+epoch 0098 | train 0.001127 | val 0.002861 | lr 8.59e-04
+epoch 0099 | train 0.001160 | val 0.002826 | lr 8.56e-04
+epoch 0100 | train 0.001102 | val 0.002759 | lr 8.54e-04
+saved checkpoints\ckpt_epoch0100.pt
+epoch 0101 | train 0.001088 | val 0.002643 | lr 8.51e-04
+epoch 0102 | train 0.001064 | val 0.002735 | lr 8.48e-04
+epoch 0103 | train 0.001295 | val 0.002865 | lr 8.45e-04
+epoch 0104 | train 0.001112 | val 0.002911 | lr 8.42e-04
+epoch 0105 | train 0.001218 | val 0.002786 | lr 8.40e-04
+epoch 0106 | train 0.001164 | val 0.002964 | lr 8.37e-04
+epoch 0107 | train 0.001051 | val 0.002844 | lr 8.34e-04
+epoch 0108 | train 0.001021 | val 0.002905 | lr 8.31e-04
+epoch 0109 | train 0.001055 | val 0.002779 | lr 8.28e-04
+epoch 0110 | train 0.001046 | val 0.002795 | lr 8.25e-04
+epoch 0111 | train 0.001060 | val 0.002666 | lr 8.22e-04
+epoch 0112 | train 0.000986 | val 0.002896 | lr 8.19e-04
+epoch 0113 | train 0.001004 | val 0.002859 | lr 8.16e-04
+epoch 0114 | train 0.000979 | val 0.002828 | lr 8.13e-04
+epoch 0115 | train 0.000990 | val 0.002733 | lr 8.10e-04
+epoch 0116 | train 0.000944 | val 0.002707 | lr 8.07e-04

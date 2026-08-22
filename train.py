@@ -26,9 +26,14 @@ def train_one_epoch(model, loader, optimizer, schedule, device, eps, epoch, tota
         x1 = x1.to(device)
         t = torch.empty(x0.shape[0], device=device).uniform_(eps, 1.0 - eps)
         xt, sigma_t, _ = model.sample_xt(x0, x1, t, schedule)
+        '''
         score_pred = model(xt, t)
         target = ((xt - x0) / sigma_t)
         loss = F.mse_loss(score_pred, target)
+        '''
+        x0_pred = model(xt, t)
+        loss = F.mse_loss(x0_pred, x0)
+
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
@@ -46,9 +51,14 @@ def evaluate(model, loader, schedule, device, eps, epoch, total_epochs):
         x1 = x1.to(device)
         t = torch.empty(x0.shape[0], device=device).uniform_(eps, 1.0 - eps)
         xt, sigma_t, _ = model.sample_xt(x0, x1, t, schedule)
+        '''
         score_pred = model(xt, t)
         target = ((xt - x0) / sigma_t)
         total_loss += F.mse_loss(score_pred, target).item()
+        '''
+        x0_pred = model(xt, t)
+        total_loss += F.mse_loss(x0_pred, x0).item()
+
         progress.set_postfix(loss=f"{(total_loss / step):.4f}")
     return total_loss / len(loader)
 
@@ -71,8 +81,7 @@ def train(
     lr=1e-3,
     batch_size=128,
     epochs=400,
-    lr_step=100,
-    lr_gamma=0.1,
+    eta_min=1e-6,
     n_inference_steps=50,
     save_every=50,
     device="cuda",
@@ -105,7 +114,11 @@ def train(
     )
 
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
-    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=lr_step, gamma=lr_gamma)
+    scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(
+        optimizer,
+        T_max=epochs,
+        eta_min=eta_min,
+    )
 
     # --- Add these variables for early stopping ---
     best_val_loss = float('inf')
