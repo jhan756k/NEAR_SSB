@@ -32,7 +32,7 @@ def prepare(
     with open(noise_output, "rb") as f:
         nstdb = pickle.load(f)
 
-    signals = np.array(nstdb[1]) #0: bw, 1: em, 2: ma
+    signals = np.array(nstdb[2]) #0: bw, 1: em, 2: ma
     noise_channel1_a = signals[0:int(signals.shape[0] / 2), 0]
     noise_channel1_b = signals[int(signals.shape[0] / 2):-1, 0]
     noise_channel2_a = signals[0:int(signals.shape[0] / 2), 1]
