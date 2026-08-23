@@ -49,14 +49,13 @@ def eval_segments(ckpt_path, n_steps=1, batch_size=128, device="cuda"):
     overall_snr_in = compute_input_snr(clean_full, noisy_full)
     print_metrics(overall_metrics, overall_snr_in)
 
-    segs = [0.2, 0.5, 1.0, 1.5, 2.0]
+    segs = [0.2, 0.6, 1.0, 1.5, 2.0]
 
     for i in range(len(segs) - 1):
         idx = np.where((n_levels >= segs[i]) & (n_levels < segs[i + 1]))[0]
 
         print("\n" + "=" * 50)
         print(f" {segs[i]} <= noise <= {segs[i+1]}")
-        print("=" * 50)
 
         if len(idx) == 0:
             print("No samples in this segment.")
