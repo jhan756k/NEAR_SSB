@@ -92,7 +92,7 @@ def train(
     
     x_train_full, y_train_full, x_test, y_test = prepare()
 
-    x_train, y_train, x_val, y_val = train_test_split(x_train_full, y_train_full, test_size=0.3, random_state=42)
+    x_train, x_val, y_train, y_val = train_test_split(x_train_full, y_train_full, test_size=0.3, random_state=42)
 
     train_loader = DataLoader(ECGDataset(x_train, y_train), batch_size=batch_size, shuffle=True)
     val_loader = DataLoader(ECGDataset(x_val, y_val), batch_size=batch_size, shuffle=False)

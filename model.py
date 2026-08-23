@@ -223,7 +223,7 @@ class SpectralSBUNet(nn.Module):
             sigma_t, _ = schedule.get_sigma(t_batch)
             x0_pred = xn - sigma_t * score
             '''
-            x0_pred = self.forward(xn, t_batch)
+            x0_pred = self.forward(xn, x1, t_batch)
             
             '''
             if i < n_steps - 1:
