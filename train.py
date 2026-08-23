@@ -125,7 +125,7 @@ def train(
 
     # --- Add these variables for early stopping ---
     best_val_loss = float('inf')
-    patience = 40
+    patience = 50
     epochs_no_improve = 0
 
     epoch_progress = tqdm(range(1, epochs + 1), desc="Training", unit="epoch")

@@ -32,18 +32,18 @@ def prepare(
     with open(noise_output, "rb") as f:
         nstdb = pickle.load(f)
 
-    bw_signals = np.array(nstdb[0])
-    bw_noise_channel1_a = bw_signals[0:int(bw_signals.shape[0] / 2), 0]
-    bw_noise_channel1_b = bw_signals[int(bw_signals.shape[0] / 2):-1, 0]
-    bw_noise_channel2_a = bw_signals[0:int(bw_signals.shape[0] / 2), 1]
-    bw_noise_channel2_b = bw_signals[int(bw_signals.shape[0] / 2):-1, 1]
+    signals = np.array(nstdb[1]) #0: bw, 1: em, 2: ma
+    noise_channel1_a = signals[0:int(signals.shape[0] / 2), 0]
+    noise_channel1_b = signals[int(signals.shape[0] / 2):-1, 0]
+    noise_channel2_a = signals[0:int(signals.shape[0] / 2), 1]
+    noise_channel2_b = signals[int(signals.shape[0] / 2):-1, 1]
 
     if noise_version == 1:
-        noise_test = bw_noise_channel2_b
-        noise_train = bw_noise_channel1_a
+        noise_test = noise_channel2_b
+        noise_train = noise_channel1_a
     elif noise_version == 2:
-        noise_test = bw_noise_channel1_b
-        noise_train = bw_noise_channel2_a
+        noise_test = noise_channel1_b
+        noise_train = noise_channel2_a
     else:
         raise Exception("Sorry, noise_version should be 1 or 2")
 
