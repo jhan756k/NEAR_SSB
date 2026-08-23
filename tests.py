@@ -71,7 +71,7 @@ def eval_segments(ckpt_path, n_steps=1, batch_size=128, device="cuda"):
 
 if __name__ == "__main__":
     eval_segments(
-        ckpt_path="checkpoints/em_ckpt_best_v1.pt",
+        ckpt_path="checkpoints/ma_ckpt_best_v1.pt",
         n_steps=1,
         batch_size=128,
         device="cuda"

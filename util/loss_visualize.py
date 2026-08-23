@@ -36,9 +36,9 @@ def plot(log_filepath):
     plt.grid(True, linestyle='--', alpha=0.7)
 
     plt.tight_layout()
-    plt.savefig('loss_plot_v5.png', dpi=300)
+    plt.savefig('ma_loss_plot_v1.png', dpi=300)
     plt.show()
 
 if __name__ == "__main__":
-    log_filepath = "logv5.txt"
+    log_filepath = "ma_logv1.txt"
     plot(log_filepath)
