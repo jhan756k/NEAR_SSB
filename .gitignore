@@ -17,3 +17,5 @@ requirements.txt
 checkpoints/
 
 results/
+
+ablation/results_white/

@@ -9,20 +9,22 @@ def prepare(
     nstdb_path="dataset/mitnoise",
     output_dir="data_prep",
     force_prep=False,
+    qtdb_pkl=None,
+    nstdb_pkl=None
 ):
     print("Getting the Data ready ... ")
     np.random.seed(1234)
     os.makedirs(output_dir, exist_ok=True)
 
-    qt_output = os.path.join(output_dir, "qtdb.pkl")
-    noise_output = os.path.join(output_dir, "mitnoise.pkl")
+    qt_output = qtdb_pkl if qtdb_pkl is not None else os.path.join(output_dir, "bw_qtdb.pkl")
+    noise_output = nstdb_pkl if nstdb_pkl is not None else os.path.join(output_dir, "bw_mitnoise.pkl")
 
-    if force_prep or not os.path.exists(qt_output):
+    if qtdb_pkl is None and (force_prep or not os.path.exists(qt_output)):
         prep_qtdb.prepare(qt_path=qt_path, output_path=qt_output)
     else:
         print("Using cached file: " + qt_output)
 
-    if force_prep or not os.path.exists(noise_output):
+    if nstdb_pkl is None and (force_prep or not os.path.exists(noise_output)):
         prep_nstdb.prepare(nstdb_path=nstdb_path, output_path=noise_output)
     else:
         print("Using cached file: " + noise_output)
