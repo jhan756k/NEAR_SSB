@@ -86,7 +86,7 @@ def train(
     os.makedirs(output_dir, exist_ok=True)
     device = torch.device(device if torch.cuda.is_available() else "cpu")
     
-    x_train_full, y_train_full, x_test, y_test = prepare(noise_version=1, qtdb_pkl="ablation/pkl/bw_qtdb.pkl", nstdb_pkl="ablation/pkl/bw_mitnoise.pkl")
+    x_train_full, y_train_full, x_test, y_test = prepare(noise_version=1, qtdb_pkl="ablation/pkl/bw_qtdb.pkl", nstdb_pkl="ablation/pkl/bw_mitnoise.pkl", reference_rnd_test="ablation/pkl/bw_rnd_test.npy")
 
     x_train, x_val, y_train, y_val = train_test_split(x_train_full, y_train_full, test_size=0.3, random_state=42)
 

@@ -153,7 +153,7 @@ def evaluate(
 
     model, schedule = load_model_and_schedule(ckpt_path, device, sqrt_h_path)
 
-    x_train, y_train, x_test, y_test = prepare()
+    x_train, y_train, x_test, y_test = prepare(reference_rnd_test="ablation/pkl/bw_rnd_test.npy")
     test_loader = DataLoader(ECGDataset(x_test, y_test), batch_size=batch_size, shuffle=False)
 
     print(f"Running inference on {len(x_test)} test samples with {n_steps} steps...")

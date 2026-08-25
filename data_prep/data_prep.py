@@ -10,7 +10,8 @@ def prepare(
     output_dir="data_prep",
     force_prep=False,
     qtdb_pkl=None,
-    nstdb_pkl=None
+    nstdb_pkl=None,
+    reference_rnd_test=None
 ):
     print("Getting the Data ready ... ")
     np.random.seed(1234)
@@ -34,7 +35,7 @@ def prepare(
     with open(noise_output, "rb") as f:
         nstdb = pickle.load(f)
 
-    signals = np.array(nstdb[2]) #0: bw, 1: em, 2: ma
+    signals = np.array(nstdb[0]) #0: bw, 1: em, 2: ma
     noise_channel1_a = signals[0:int(signals.shape[0] / 2), 0]
     noise_channel1_b = signals[int(signals.shape[0] / 2):-1, 0]
     noise_channel2_a = signals[0:int(signals.shape[0] / 2), 1]
@@ -94,7 +95,18 @@ def prepare(
             noise_index = 0
 
     noise_index = 0
-    rnd_test = np.random.randint(low=20, high=200, size=len(beats_test)) / 100
+
+    if reference_rnd_test is None:
+        rnd_test = np.random.randint(low=20, high=200, size=len(beats_test)) / 100
+
+    else:
+        rnd_test = np.load(reference_rnd_test)
+
+        if len(rnd_test) != len(beats_test):
+            raise ValueError(f"Reference has {len(rnd_test)} samples but beats_test has {len(beats_test)}")
+
+        print(f"Using reference rnd_Test: {reference_rnd_test}")
+
     np.save(output_dir.rstrip("/") + "/rnd_test.npy", rnd_test)
     print("rnd_test shape: " + str(rnd_test.shape))
 
