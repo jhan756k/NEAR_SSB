@@ -8,9 +8,9 @@ from data_prep.data_prep import prepare
 from inference import load_model_and_schedule, compute_metrics, compute_input_snr, print_metrics
 
 
-def eval_segments(ckpt_path, n_steps=1, batch_size=128, device="cuda"):
+def eval_segments(ckpt_path, sqrt_h_path, n_steps=1, batch_size=128, device="cuda"):
     device = torch.device(device if torch.cuda.is_available() else "cpu")
-    model, schedule = load_model_and_schedule(ckpt_path, device)
+    model, schedule = load_model_and_schedule(ckpt_path, device, sqrt_h_path=sqrt_h_path)
 
     output_dir = "data_prep"
     _, _, x_test, y_test = prepare(output_dir=output_dir)
@@ -18,7 +18,7 @@ def eval_segments(ckpt_path, n_steps=1, batch_size=128, device="cuda"):
     x_test = torch.FloatTensor(x_test).permute(0, 2, 1)
     y_test = torch.FloatTensor(y_test).permute(0, 2, 1)
 
-    rnd_test_path = os.path.join(output_dir, "rnd_test.npy")
+    rnd_test_path = "data_prep/bw_rnd_test.npy"
     n_levels = np.load(rnd_test_path)
 
     test_loader = DataLoader(
@@ -71,7 +71,8 @@ def eval_segments(ckpt_path, n_steps=1, batch_size=128, device="cuda"):
 
 if __name__ == "__main__":
     eval_segments(
-        ckpt_path="checkpoints/ma_ckpt_best_v1.pt",
+        ckpt_path="checkpoints/bw_ckpt_best_v5.pt",
+        sqrt_h_path="data_prep/em_spectral_h.npy",
         n_steps=1,
         batch_size=128,
         device="cuda"

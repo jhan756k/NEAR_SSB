@@ -9,10 +9,14 @@ from train import ECGDataset
 from data_prep.data_prep import prepare
 
 
-def load_model_and_schedule(ckpt_path, device, sqrt_h_path="data_prep/ma_spectral_h.npy"):
+def load_model_and_schedule(ckpt_path, device, sqrt_h_path="data_prep/em_spectral_h.npy"):
     model = SpectralSBUNet(sqrt_h_path=sqrt_h_path).to(device)
     ckpt = torch.load(ckpt_path, map_location=device)
     model.load_state_dict(ckpt["model_state"])
+
+    if hasattr(model, "load_spectral_h"):
+        model.load_spectral_h(sqrt_h_path)
+        
     model.eval()
 
     if "schedule_config" in ckpt:
@@ -141,7 +145,7 @@ def visualize_overlay(clean, noisy, denoised, indices, fs=250, output_dir="resul
 
 def evaluate(
     ckpt_path,
-    sqrt_h_path="data_prep/ma_spectral_h.npy",
+    sqrt_h_path="data_prep/em_spectral_h.npy",
     n_steps=50,
     batch_size=32,
     device="cuda",
@@ -152,7 +156,7 @@ def evaluate(
 
     model, schedule = load_model_and_schedule(ckpt_path, device, sqrt_h_path)
 
-    x_train, y_train, x_test, y_test = prepare(qtdb_pkl="data_prep/ma_qtdb.pkl", nstdb_pkl="data_prep/ma_mitnoise.pkl", reference_rnd_test="data_prep/ma_rnd_test.npy")
+    x_train, y_train, x_test, y_test = prepare(qtdb_pkl="data_prep/bw_qtdb.pkl", nstdb_pkl="data_prep/bw_mitnoise.pkl", reference_rnd_test="data_prep/bw_rnd_test.npy")
     test_loader = DataLoader(ECGDataset(x_test, y_test), batch_size=batch_size, shuffle=False)
 
     print(f"Running inference on {len(x_test)} test samples with {n_steps} steps...")
@@ -175,7 +179,7 @@ def evaluate(
 
 if __name__ == "__main__":
     evaluate(
-        ckpt_path="checkpoints/ma_ckpt_best_v1.pt",
+        ckpt_path="checkpoints/bw_ckpt_best_v5.pt",
         n_steps=1,
         batch_size=128,
         device="cuda",
