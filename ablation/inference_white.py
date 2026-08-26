@@ -153,7 +153,7 @@ def evaluate(
 
     model, schedule = load_model_and_schedule(ckpt_path, device, sqrt_h_path)
 
-    x_train, y_train, x_test, y_test = prepare(qtdb_pkl="ablation/pkl/em_qtdb.pkl", nstdb_pkl="ablation/pkl/em_mitnoise.pkl", reference_rnd_test="ablation/pkl/em_rnd_test.npy")
+    x_train, y_train, x_test, y_test = prepare(qtdb_pkl="ablation/pkl/ma_qtdb.pkl", nstdb_pkl="ablation/pkl/ma_mitnoise.pkl", reference_rnd_test="ablation/pkl/ma_rnd_test.npy")
     test_loader = DataLoader(ECGDataset(x_test, y_test), batch_size=batch_size, shuffle=False)
 
     print(f"Running inference on {len(x_test)} test samples with {n_steps} steps...")
@@ -163,9 +163,9 @@ def evaluate(
     snr_in = compute_input_snr(clean, noisy)
     print_metrics(metrics, snr_in)
 
-    np.save(os.path.join(output_dir, "clean.npy"), clean)
-    np.save(os.path.join(output_dir, "noisy.npy"), noisy)
-    np.save(os.path.join(output_dir, "denoised.npy"), denoised)
+    np.save(os.path.join(output_dir, "clean_white.npy"), clean)
+    np.save(os.path.join(output_dir, "noisy_white.npy"), noisy)
+    np.save(os.path.join(output_dir, "denoised_white.npy"), denoised)
 
     if visualize_indices is not None:
         visualize(clean, noisy, denoised, visualize_indices, output_dir=output_dir)
@@ -176,7 +176,7 @@ def evaluate(
 
 if __name__ == "__main__":
     evaluate(
-        ckpt_path="checkpoints/ablation_noise_artifact/ckpt_best.pt",
+        ckpt_path="checkpoints/ablation_noise_artifact/ma_white_ckpt_best_v1.pt",
         n_steps=1,
         batch_size=128,
         device="cuda",
