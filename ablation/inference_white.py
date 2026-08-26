@@ -163,9 +163,9 @@ def evaluate(
     snr_in = compute_input_snr(clean, noisy)
     print_metrics(metrics, snr_in)
 
-    np.save(os.path.join(output_dir, "clean_white.npy"), clean)
-    np.save(os.path.join(output_dir, "noisy_white.npy"), noisy)
-    np.save(os.path.join(output_dir, "denoised_white.npy"), denoised)
+    np.save(os.path.join(output_dir, "clean.npy"), clean)
+    np.save(os.path.join(output_dir, "noisy.npy"), noisy)
+    np.save(os.path.join(output_dir, "denoised.npy"), denoised)
 
     if visualize_indices is not None:
         visualize(clean, noisy, denoised, visualize_indices, output_dir=output_dir)

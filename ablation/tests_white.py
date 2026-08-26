@@ -71,7 +71,7 @@ def eval_segments(ckpt_path, n_steps=1, batch_size=128, device="cuda"):
 
 if __name__ == "__main__":
     eval_segments(
-        ckpt_path="checkpoints/ablation_noise_artifact/bw_white_ckpt_best_v1.pt",
+        ckpt_path="checkpoints/ablation_noise_artifact/ma_white_ckpt_best_v1.pt",
         n_steps=1,
         batch_size=128,
         device="cuda"
