@@ -1,0 +1,426 @@
+epoch 0001 | train 0.012357 | val 0.003687 | lr 1.00e-03
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0002 | train 0.002902 | val 0.002342 | lr 1.00e-03
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0003 | train 0.002297 | val 0.001892 | lr 1.00e-03
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0004 | train 0.002033 | val 0.001657 | lr 1.00e-03
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0005 | train 0.001831 | val 0.001425 | lr 1.00e-03
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0006 | train 0.001690 | val 0.001275 | lr 9.99e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0007 | train 0.001458 | val 0.002072 | lr 9.99e-04
+epoch 0008 | train 0.015711 | val 0.011601 | lr 9.99e-04
+epoch 0009 | train 0.008064 | val 0.005465 | lr 9.99e-04
+epoch 0010 | train 0.004943 | val 0.003878 | lr 9.98e-04
+epoch 0011 | train 0.003336 | val 0.002769 | lr 9.98e-04
+epoch 0012 | train 0.002900 | val 0.002686 | lr 9.98e-04
+epoch 0013 | train 0.002663 | val 0.001999 | lr 9.97e-04
+epoch 0014 | train 0.002285 | val 0.002060 | lr 9.97e-04
+epoch 0015 | train 0.002476 | val 0.004507 | lr 9.97e-04
+epoch 0016 | train 0.002408 | val 0.002179 | lr 9.96e-04
+epoch 0017 | train 0.002163 | val 0.001913 | lr 9.96e-04
+epoch 0018 | train 0.001951 | val 0.001682 | lr 9.95e-04
+epoch 0019 | train 0.001900 | val 0.001826 | lr 9.94e-04
+epoch 0020 | train 0.001889 | val 0.001633 | lr 9.94e-04
+epoch 0021 | train 0.001773 | val 0.001626 | lr 9.93e-04
+epoch 0022 | train 0.001759 | val 0.001531 | lr 9.93e-04
+epoch 0023 | train 0.001757 | val 0.001568 | lr 9.92e-04
+epoch 0024 | train 0.001720 | val 0.001562 | lr 9.91e-04
+epoch 0025 | train 0.001767 | val 0.001549 | lr 9.90e-04
+epoch 0026 | train 0.001944 | val 0.001466 | lr 9.90e-04
+epoch 0027 | train 0.001621 | val 0.001690 | lr 9.89e-04
+epoch 0028 | train 0.001717 | val 0.005895 | lr 9.88e-04
+epoch 0029 | train 0.002293 | val 0.001726 | lr 9.87e-04
+epoch 0030 | train 0.001698 | val 0.002103 | lr 9.86e-04
+epoch 0031 | train 0.001590 | val 0.001754 | lr 9.85e-04
+epoch 0032 | train 0.001519 | val 0.001718 | lr 9.84e-04
+epoch 0033 | train 0.001955 | val 0.001525 | lr 9.83e-04
+epoch 0034 | train 0.001508 | val 0.001352 | lr 9.82e-04
+epoch 0035 | train 0.001423 | val 0.001430 | lr 9.81e-04
+epoch 0036 | train 0.001403 | val 0.001281 | lr 9.80e-04
+epoch 0037 | train 0.001513 | val 0.001752 | lr 9.79e-04
+epoch 0038 | train 0.001378 | val 0.001279 | lr 9.78e-04
+epoch 0039 | train 0.001308 | val 0.001485 | lr 9.77e-04
+epoch 0040 | train 0.001315 | val 0.001311 | lr 9.76e-04
+epoch 0041 | train 0.001365 | val 0.001609 | lr 9.74e-04
+epoch 0042 | train 0.001356 | val 0.001137 | lr 9.73e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0043 | train 0.001285 | val 0.002322 | lr 9.72e-04
+epoch 0044 | train 0.001560 | val 0.001537 | lr 9.70e-04
+epoch 0045 | train 0.001267 | val 0.001192 | lr 9.69e-04
+epoch 0046 | train 0.001249 | val 0.001309 | lr 9.68e-04
+epoch 0047 | train 0.001297 | val 0.001217 | lr 9.66e-04
+epoch 0048 | train 0.001188 | val 0.001085 | lr 9.65e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0049 | train 0.001164 | val 0.001135 | lr 9.63e-04
+epoch 0050 | train 0.001163 | val 0.001078 | lr 9.62e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+saved checkpoints/ablation_noise_artifact\ckpt_epoch0050.pt
+epoch 0051 | train 0.001175 | val 0.001216 | lr 9.60e-04
+epoch 0052 | train 0.001132 | val 0.001096 | lr 9.59e-04
+epoch 0053 | train 0.001455 | val 0.001444 | lr 9.57e-04
+epoch 0054 | train 0.001192 | val 0.001097 | lr 9.56e-04
+epoch 0055 | train 0.001164 | val 0.001149 | lr 9.54e-04
+epoch 0056 | train 0.001133 | val 0.001134 | lr 9.52e-04
+epoch 0057 | train 0.001115 | val 0.001079 | lr 9.51e-04
+epoch 0058 | train 0.001113 | val 0.001325 | lr 9.49e-04
+epoch 0059 | train 0.001285 | val 0.001058 | lr 9.47e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0060 | train 0.001104 | val 0.001047 | lr 9.46e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0061 | train 0.001130 | val 0.001054 | lr 9.44e-04
+epoch 0062 | train 0.001089 | val 0.001070 | lr 9.42e-04
+epoch 0063 | train 0.001083 | val 0.001091 | lr 9.40e-04
+epoch 0064 | train 0.001045 | val 0.001042 | lr 9.38e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0065 | train 0.001104 | val 0.001079 | lr 9.36e-04
+epoch 0066 | train 0.001068 | val 0.001016 | lr 9.34e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0067 | train 0.001000 | val 0.000977 | lr 9.32e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0068 | train 0.001009 | val 0.001236 | lr 9.30e-04
+epoch 0069 | train 0.001008 | val 0.001154 | lr 9.28e-04
+epoch 0070 | train 0.000984 | val 0.000928 | lr 9.26e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0071 | train 0.000983 | val 0.001227 | lr 9.24e-04
+epoch 0072 | train 0.000987 | val 0.001097 | lr 9.22e-04
+epoch 0073 | train 0.001025 | val 0.001103 | lr 9.20e-04
+epoch 0074 | train 0.001004 | val 0.000991 | lr 9.18e-04
+epoch 0075 | train 0.000991 | val 0.000944 | lr 9.16e-04
+epoch 0076 | train 0.000997 | val 0.001042 | lr 9.14e-04
+epoch 0077 | train 0.001071 | val 0.000953 | lr 9.11e-04
+epoch 0078 | train 0.000952 | val 0.000942 | lr 9.09e-04
+epoch 0079 | train 0.000977 | val 0.001027 | lr 9.07e-04
+epoch 0080 | train 0.000925 | val 0.000897 | lr 9.05e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0081 | train 0.001044 | val 0.001035 | lr 9.02e-04
+epoch 0082 | train 0.000960 | val 0.000965 | lr 9.00e-04
+epoch 0083 | train 0.000976 | val 0.000930 | lr 8.98e-04
+epoch 0084 | train 0.000961 | val 0.000988 | lr 8.95e-04
+epoch 0085 | train 0.000999 | val 0.000978 | lr 8.93e-04
+epoch 0086 | train 0.001026 | val 0.000887 | lr 8.90e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0087 | train 0.000924 | val 0.000907 | lr 8.88e-04
+epoch 0088 | train 0.000930 | val 0.001829 | lr 8.85e-04
+epoch 0089 | train 0.000968 | val 0.000967 | lr 8.83e-04
+epoch 0090 | train 0.000897 | val 0.000848 | lr 8.80e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0091 | train 0.000872 | val 0.001019 | lr 8.78e-04
+epoch 0092 | train 0.001335 | val 0.001187 | lr 8.75e-04
+epoch 0093 | train 0.001243 | val 0.000935 | lr 8.73e-04
+epoch 0094 | train 0.000933 | val 0.000902 | lr 8.70e-04
+epoch 0095 | train 0.000911 | val 0.000956 | lr 8.67e-04
+epoch 0096 | train 0.000907 | val 0.000961 | lr 8.65e-04
+epoch 0097 | train 0.000875 | val 0.000871 | lr 8.62e-04
+epoch 0098 | train 0.000865 | val 0.000884 | lr 8.59e-04
+epoch 0099 | train 0.000880 | val 0.000953 | lr 8.56e-04
+epoch 0100 | train 0.000867 | val 0.000883 | lr 8.54e-04
+saved checkpoints/ablation_noise_artifact\ckpt_epoch0100.pt
+epoch 0101 | train 0.000859 | val 0.000852 | lr 8.51e-04
+epoch 0102 | train 0.000894 | val 0.000964 | lr 8.48e-04
+epoch 0103 | train 0.000863 | val 0.000856 | lr 8.45e-04
+epoch 0104 | train 0.000837 | val 0.000850 | lr 8.42e-04
+epoch 0105 | train 0.000831 | val 0.000966 | lr 8.40e-04
+epoch 0106 | train 0.000973 | val 0.000863 | lr 8.37e-04
+epoch 0107 | train 0.000844 | val 0.000947 | lr 8.34e-04
+epoch 0108 | train 0.000861 | val 0.000979 | lr 8.31e-04
+epoch 0109 | train 0.000874 | val 0.000858 | lr 8.28e-04
+epoch 0110 | train 0.000916 | val 0.000971 | lr 8.25e-04
+epoch 0111 | train 0.000901 | val 0.000828 | lr 8.22e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0112 | train 0.000852 | val 0.000840 | lr 8.19e-04
+epoch 0113 | train 0.000832 | val 0.000805 | lr 8.16e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0114 | train 0.000799 | val 0.000796 | lr 8.13e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0115 | train 0.000795 | val 0.000897 | lr 8.10e-04
+epoch 0116 | train 0.000819 | val 0.000839 | lr 8.07e-04
+epoch 0117 | train 0.000807 | val 0.000900 | lr 8.04e-04
+epoch 0118 | train 0.000794 | val 0.000900 | lr 8.00e-04
+epoch 0119 | train 0.000797 | val 0.000983 | lr 7.97e-04
+epoch 0120 | train 0.000865 | val 0.000818 | lr 7.94e-04
+epoch 0121 | train 0.000818 | val 0.000923 | lr 7.91e-04
+epoch 0122 | train 0.000801 | val 0.000772 | lr 7.88e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0123 | train 0.000826 | val 0.000860 | lr 7.84e-04
+epoch 0124 | train 0.000774 | val 0.000845 | lr 7.81e-04
+epoch 0125 | train 0.000817 | val 0.000766 | lr 7.78e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0126 | train 0.000786 | val 0.000823 | lr 7.75e-04
+epoch 0127 | train 0.000810 | val 0.000913 | lr 7.71e-04
+epoch 0128 | train 0.000800 | val 0.000776 | lr 7.68e-04
+epoch 0129 | train 0.000733 | val 0.000726 | lr 7.65e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0130 | train 0.000747 | val 0.000802 | lr 7.61e-04
+epoch 0131 | train 0.000744 | val 0.000772 | lr 7.58e-04
+epoch 0132 | train 0.001080 | val 0.001012 | lr 7.55e-04
+epoch 0133 | train 0.000872 | val 0.000867 | lr 7.51e-04
+epoch 0134 | train 0.000773 | val 0.000785 | lr 7.48e-04
+epoch 0135 | train 0.000752 | val 0.000771 | lr 7.45e-04
+epoch 0136 | train 0.000754 | val 0.000735 | lr 7.41e-04
+epoch 0137 | train 0.000719 | val 0.000958 | lr 7.38e-04
+epoch 0138 | train 0.000732 | val 0.000775 | lr 7.34e-04
+epoch 0139 | train 0.000701 | val 0.000843 | lr 7.31e-04
+epoch 0140 | train 0.000711 | val 0.000854 | lr 7.27e-04
+epoch 0141 | train 0.000741 | val 0.000744 | lr 7.24e-04
+epoch 0142 | train 0.000735 | val 0.000745 | lr 7.20e-04
+epoch 0143 | train 0.000727 | val 0.000814 | lr 7.17e-04
+epoch 0144 | train 0.000762 | val 0.000754 | lr 7.13e-04
+epoch 0145 | train 0.000752 | val 0.000809 | lr 7.10e-04
+epoch 0146 | train 0.000750 | val 0.000788 | lr 7.06e-04
+epoch 0147 | train 0.000725 | val 0.000725 | lr 7.02e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0148 | train 0.000704 | val 0.000675 | lr 6.99e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0149 | train 0.000699 | val 0.000752 | lr 6.95e-04
+epoch 0150 | train 0.000736 | val 0.000749 | lr 6.92e-04
+saved checkpoints/ablation_noise_artifact\ckpt_epoch0150.pt
+epoch 0151 | train 0.000692 | val 0.000722 | lr 6.88e-04
+epoch 0152 | train 0.000707 | val 0.000804 | lr 6.84e-04
+epoch 0153 | train 0.000713 | val 0.000707 | lr 6.81e-04
+epoch 0154 | train 0.000688 | val 0.000709 | lr 6.77e-04
+epoch 0155 | train 0.000680 | val 0.000702 | lr 6.73e-04
+epoch 0156 | train 0.000679 | val 0.000741 | lr 6.70e-04
+epoch 0157 | train 0.000685 | val 0.000774 | lr 6.66e-04
+epoch 0158 | train 0.000668 | val 0.000711 | lr 6.62e-04
+epoch 0159 | train 0.000668 | val 0.000697 | lr 6.59e-04
+epoch 0160 | train 0.000673 | val 0.000732 | lr 6.55e-04
+epoch 0161 | train 0.000701 | val 0.000717 | lr 6.51e-04
+epoch 0162 | train 0.000659 | val 0.000682 | lr 6.47e-04
+epoch 0163 | train 0.000633 | val 0.000679 | lr 6.44e-04
+epoch 0164 | train 0.000655 | val 0.000708 | lr 6.40e-04
+epoch 0165 | train 0.000652 | val 0.000730 | lr 6.36e-04
+epoch 0166 | train 0.000688 | val 0.000744 | lr 6.32e-04
+epoch 0167 | train 0.000696 | val 0.000735 | lr 6.29e-04
+epoch 0168 | train 0.000646 | val 0.000701 | lr 6.25e-04
+epoch 0169 | train 0.000643 | val 0.000677 | lr 6.21e-04
+epoch 0170 | train 0.000636 | val 0.000670 | lr 6.17e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0171 | train 0.000652 | val 0.000685 | lr 6.13e-04
+epoch 0172 | train 0.000633 | val 0.000749 | lr 6.09e-04
+epoch 0173 | train 0.000664 | val 0.000684 | lr 6.06e-04
+epoch 0174 | train 0.000630 | val 0.000679 | lr 6.02e-04
+epoch 0175 | train 0.000615 | val 0.000647 | lr 5.98e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0176 | train 0.000652 | val 0.000737 | lr 5.94e-04
+epoch 0177 | train 0.000635 | val 0.000710 | lr 5.90e-04
+epoch 0178 | train 0.000611 | val 0.000658 | lr 5.86e-04
+epoch 0179 | train 0.000618 | val 0.000687 | lr 5.83e-04
+epoch 0180 | train 0.000633 | val 0.000647 | lr 5.79e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0181 | train 0.000615 | val 0.000721 | lr 5.75e-04
+epoch 0182 | train 0.000608 | val 0.000670 | lr 5.71e-04
+epoch 0183 | train 0.000719 | val 0.000689 | lr 5.67e-04
+epoch 0184 | train 0.000627 | val 0.000670 | lr 5.63e-04
+epoch 0185 | train 0.000611 | val 0.000661 | lr 5.59e-04
+epoch 0186 | train 0.000618 | val 0.000664 | lr 5.55e-04
+epoch 0187 | train 0.000606 | val 0.000642 | lr 5.51e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0188 | train 0.000613 | val 0.000687 | lr 5.48e-04
+epoch 0189 | train 0.000594 | val 0.000592 | lr 5.44e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0190 | train 0.000593 | val 0.000648 | lr 5.40e-04
+epoch 0191 | train 0.000601 | val 0.000652 | lr 5.36e-04
+epoch 0192 | train 0.000612 | val 0.000617 | lr 5.32e-04
+epoch 0193 | train 0.000594 | val 0.000699 | lr 5.28e-04
+epoch 0194 | train 0.000578 | val 0.000657 | lr 5.24e-04
+epoch 0195 | train 0.000582 | val 0.000683 | lr 5.20e-04
+epoch 0196 | train 0.000593 | val 0.000619 | lr 5.16e-04
+epoch 0197 | train 0.000585 | val 0.000679 | lr 5.12e-04
+epoch 0198 | train 0.000570 | val 0.000633 | lr 5.08e-04
+epoch 0199 | train 0.000563 | val 0.000663 | lr 5.04e-04
+epoch 0200 | train 0.000575 | val 0.000593 | lr 5.01e-04
+saved checkpoints/ablation_noise_artifact\ckpt_epoch0200.pt
+epoch 0201 | train 0.000598 | val 0.000661 | lr 4.97e-04
+epoch 0202 | train 0.000588 | val 0.000622 | lr 4.93e-04
+epoch 0203 | train 0.000573 | val 0.000617 | lr 4.89e-04
+epoch 0204 | train 0.000579 | val 0.000632 | lr 4.85e-04
+epoch 0205 | train 0.000554 | val 0.000646 | lr 4.81e-04
+epoch 0206 | train 0.000559 | val 0.000650 | lr 4.77e-04
+epoch 0207 | train 0.000565 | val 0.000657 | lr 4.73e-04
+epoch 0208 | train 0.000552 | val 0.000667 | lr 4.69e-04
+epoch 0209 | train 0.000568 | val 0.000616 | lr 4.65e-04
+epoch 0210 | train 0.000547 | val 0.000736 | lr 4.61e-04
+epoch 0211 | train 0.000579 | val 0.000759 | lr 4.57e-04
+epoch 0212 | train 0.000553 | val 0.000606 | lr 4.53e-04
+epoch 0213 | train 0.000547 | val 0.000638 | lr 4.50e-04
+epoch 0214 | train 0.000540 | val 0.000626 | lr 4.46e-04
+epoch 0215 | train 0.000545 | val 0.000603 | lr 4.42e-04
+epoch 0216 | train 0.000567 | val 0.000663 | lr 4.38e-04
+epoch 0217 | train 0.000538 | val 0.000602 | lr 4.34e-04
+epoch 0218 | train 0.000538 | val 0.000600 | lr 4.30e-04
+epoch 0219 | train 0.000530 | val 0.000629 | lr 4.26e-04
+epoch 0220 | train 0.000523 | val 0.000574 | lr 4.22e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0221 | train 0.000531 | val 0.000600 | lr 4.18e-04
+epoch 0222 | train 0.000534 | val 0.000614 | lr 4.15e-04
+epoch 0223 | train 0.000532 | val 0.000682 | lr 4.11e-04
+epoch 0224 | train 0.000528 | val 0.000626 | lr 4.07e-04
+epoch 0225 | train 0.000533 | val 0.000628 | lr 4.03e-04
+epoch 0226 | train 0.000520 | val 0.000577 | lr 3.99e-04
+epoch 0227 | train 0.000525 | val 0.000645 | lr 3.95e-04
+epoch 0228 | train 0.000518 | val 0.000609 | lr 3.92e-04
+epoch 0229 | train 0.000517 | val 0.000655 | lr 3.88e-04
+epoch 0230 | train 0.000549 | val 0.000589 | lr 3.84e-04
+epoch 0231 | train 0.000523 | val 0.000621 | lr 3.80e-04
+epoch 0232 | train 0.000531 | val 0.000624 | lr 3.76e-04
+epoch 0233 | train 0.000506 | val 0.000632 | lr 3.72e-04
+epoch 0234 | train 0.000502 | val 0.000600 | lr 3.69e-04
+epoch 0235 | train 0.000502 | val 0.000623 | lr 3.65e-04
+epoch 0236 | train 0.000501 | val 0.000618 | lr 3.61e-04
+epoch 0237 | train 0.000496 | val 0.000579 | lr 3.57e-04
+epoch 0238 | train 0.000505 | val 0.000593 | lr 3.54e-04
+epoch 0239 | train 0.000507 | val 0.000603 | lr 3.50e-04
+epoch 0240 | train 0.000485 | val 0.000561 | lr 3.46e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0241 | train 0.000491 | val 0.000563 | lr 3.42e-04
+epoch 0242 | train 0.000485 | val 0.000579 | lr 3.39e-04
+epoch 0243 | train 0.000484 | val 0.000569 | lr 3.35e-04
+epoch 0244 | train 0.000486 | val 0.000552 | lr 3.31e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0245 | train 0.000489 | val 0.000577 | lr 3.28e-04
+epoch 0246 | train 0.000482 | val 0.000646 | lr 3.24e-04
+epoch 0247 | train 0.000480 | val 0.000574 | lr 3.20e-04
+epoch 0248 | train 0.000479 | val 0.000537 | lr 3.17e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0249 | train 0.000475 | val 0.000553 | lr 3.13e-04
+epoch 0250 | train 0.000481 | val 0.000626 | lr 3.09e-04
+saved checkpoints/ablation_noise_artifact\ckpt_epoch0250.pt
+epoch 0251 | train 0.000490 | val 0.000594 | lr 3.06e-04
+epoch 0252 | train 0.000484 | val 0.000558 | lr 3.02e-04
+epoch 0253 | train 0.000480 | val 0.000586 | lr 2.99e-04
+epoch 0254 | train 0.000471 | val 0.000600 | lr 2.95e-04
+epoch 0255 | train 0.000471 | val 0.000556 | lr 2.91e-04
+epoch 0256 | train 0.000470 | val 0.000587 | lr 2.88e-04
+epoch 0257 | train 0.000478 | val 0.000570 | lr 2.84e-04
+epoch 0258 | train 0.000461 | val 0.000562 | lr 2.81e-04
+epoch 0259 | train 0.000462 | val 0.000569 | lr 2.77e-04
+epoch 0260 | train 0.000457 | val 0.000557 | lr 2.74e-04
+epoch 0261 | train 0.000465 | val 0.000549 | lr 2.70e-04
+epoch 0262 | train 0.000456 | val 0.000573 | lr 2.67e-04
+epoch 0263 | train 0.000451 | val 0.000569 | lr 2.63e-04
+epoch 0264 | train 0.000466 | val 0.000562 | lr 2.60e-04
+epoch 0265 | train 0.000448 | val 0.000592 | lr 2.56e-04
+epoch 0266 | train 0.000457 | val 0.000566 | lr 2.53e-04
+epoch 0267 | train 0.000446 | val 0.000565 | lr 2.50e-04
+epoch 0268 | train 0.000445 | val 0.000571 | lr 2.46e-04
+epoch 0269 | train 0.000459 | val 0.000570 | lr 2.43e-04
+epoch 0270 | train 0.000480 | val 0.000570 | lr 2.40e-04
+epoch 0271 | train 0.000450 | val 0.000550 | lr 2.36e-04
+epoch 0272 | train 0.000442 | val 0.000647 | lr 2.33e-04
+epoch 0273 | train 0.000449 | val 0.000523 | lr 2.30e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0274 | train 0.000434 | val 0.000569 | lr 2.26e-04
+epoch 0275 | train 0.000438 | val 0.000520 | lr 2.23e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0276 | train 0.000444 | val 0.000525 | lr 2.20e-04
+epoch 0277 | train 0.000447 | val 0.000529 | lr 2.17e-04
+epoch 0278 | train 0.000445 | val 0.000534 | lr 2.13e-04
+epoch 0279 | train 0.000438 | val 0.000543 | lr 2.10e-04
+epoch 0280 | train 0.000435 | val 0.000533 | lr 2.07e-04
+epoch 0281 | train 0.000430 | val 0.000536 | lr 2.04e-04
+epoch 0282 | train 0.000431 | val 0.000568 | lr 2.01e-04
+epoch 0283 | train 0.000425 | val 0.000537 | lr 1.97e-04
+epoch 0284 | train 0.000434 | val 0.000534 | lr 1.94e-04
+epoch 0285 | train 0.000427 | val 0.000501 | lr 1.91e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0286 | train 0.000424 | val 0.000526 | lr 1.88e-04
+epoch 0287 | train 0.000434 | val 0.000553 | lr 1.85e-04
+epoch 0288 | train 0.000424 | val 0.000530 | lr 1.82e-04
+epoch 0289 | train 0.000423 | val 0.000513 | lr 1.79e-04
+epoch 0290 | train 0.000421 | val 0.000515 | lr 1.76e-04
+epoch 0291 | train 0.000420 | val 0.000510 | lr 1.73e-04
+epoch 0292 | train 0.000418 | val 0.000528 | lr 1.70e-04
+epoch 0293 | train 0.000415 | val 0.000516 | lr 1.67e-04
+epoch 0294 | train 0.000424 | val 0.000509 | lr 1.64e-04
+epoch 0295 | train 0.000417 | val 0.000514 | lr 1.61e-04
+epoch 0296 | train 0.000415 | val 0.000521 | lr 1.59e-04
+epoch 0297 | train 0.000416 | val 0.000528 | lr 1.56e-04
+epoch 0298 | train 0.000418 | val 0.000499 | lr 1.53e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0299 | train 0.000416 | val 0.000512 | lr 1.50e-04
+epoch 0300 | train 0.000414 | val 0.000500 | lr 1.47e-04
+saved checkpoints/ablation_noise_artifact\ckpt_epoch0300.pt
+epoch 0301 | train 0.000412 | val 0.000545 | lr 1.45e-04
+epoch 0302 | train 0.000417 | val 0.000528 | lr 1.42e-04
+epoch 0303 | train 0.000407 | val 0.000509 | lr 1.39e-04
+epoch 0304 | train 0.000407 | val 0.000520 | lr 1.36e-04
+epoch 0305 | train 0.000411 | val 0.000505 | lr 1.34e-04
+epoch 0306 | train 0.000408 | val 0.000510 | lr 1.31e-04
+epoch 0307 | train 0.000404 | val 0.000506 | lr 1.28e-04
+epoch 0308 | train 0.000405 | val 0.000535 | lr 1.26e-04
+epoch 0309 | train 0.000407 | val 0.000515 | lr 1.23e-04
+epoch 0310 | train 0.000405 | val 0.000522 | lr 1.21e-04
+epoch 0311 | train 0.000404 | val 0.000520 | lr 1.18e-04
+epoch 0312 | train 0.000403 | val 0.000494 | lr 1.16e-04
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0313 | train 0.000401 | val 0.000525 | lr 1.13e-04
+epoch 0314 | train 0.000400 | val 0.000508 | lr 1.11e-04
+epoch 0315 | train 0.000399 | val 0.000499 | lr 1.08e-04
+epoch 0316 | train 0.000397 | val 0.000547 | lr 1.06e-04
+epoch 0317 | train 0.000399 | val 0.000542 | lr 1.03e-04
+epoch 0318 | train 0.000397 | val 0.000525 | lr 1.01e-04
+epoch 0319 | train 0.000398 | val 0.000513 | lr 9.87e-05
+epoch 0320 | train 0.000399 | val 0.000521 | lr 9.64e-05
+epoch 0321 | train 0.000393 | val 0.000508 | lr 9.41e-05
+epoch 0322 | train 0.000396 | val 0.000516 | lr 9.18e-05
+epoch 0323 | train 0.000415 | val 0.000525 | lr 8.96e-05
+epoch 0324 | train 0.000400 | val 0.000528 | lr 8.74e-05
+epoch 0325 | train 0.000394 | val 0.000506 | lr 8.52e-05
+epoch 0326 | train 0.000393 | val 0.000482 | lr 8.30e-05
+New best val_loss! Saved checkpoints/ablation_noise_artifact\ckpt_best.pt
+epoch 0327 | train 0.000388 | val 0.000506 | lr 8.09e-05
+epoch 0328 | train 0.000392 | val 0.000517 | lr 7.88e-05
+epoch 0329 | train 0.000387 | val 0.000504 | lr 7.67e-05
+epoch 0330 | train 0.000400 | val 0.000504 | lr 7.46e-05
+epoch 0331 | train 0.000394 | val 0.000501 | lr 7.26e-05
+epoch 0332 | train 0.000387 | val 0.000524 | lr 7.06e-05
+epoch 0333 | train 0.000386 | val 0.000529 | lr 6.86e-05
+epoch 0334 | train 0.000384 | val 0.000535 | lr 6.66e-05
+epoch 0335 | train 0.000388 | val 0.000528 | lr 6.47e-05
+epoch 0336 | train 0.000384 | val 0.000498 | lr 6.28e-05
+epoch 0337 | train 0.000384 | val 0.000503 | lr 6.09e-05
+epoch 0338 | train 0.000384 | val 0.000519 | lr 5.91e-05
+epoch 0339 | train 0.000384 | val 0.000513 | lr 5.72e-05
+epoch 0340 | train 0.000381 | val 0.000487 | lr 5.54e-05
+epoch 0341 | train 0.000383 | val 0.000505 | lr 5.37e-05
+epoch 0342 | train 0.000383 | val 0.000505 | lr 5.19e-05
+epoch 0343 | train 0.000385 | val 0.000511 | lr 5.02e-05
+epoch 0344 | train 0.000379 | val 0.000538 | lr 4.85e-05
+epoch 0345 | train 0.000386 | val 0.000515 | lr 4.69e-05
+epoch 0346 | train 0.000383 | val 0.000505 | lr 4.53e-05
+epoch 0347 | train 0.000381 | val 0.000498 | lr 4.37e-05
+epoch 0348 | train 0.000381 | val 0.000514 | lr 4.21e-05
+epoch 0349 | train 0.000378 | val 0.000511 | lr 4.05e-05
+epoch 0350 | train 0.000382 | val 0.000504 | lr 3.90e-05
+saved checkpoints/ablation_noise_artifact\ckpt_epoch0350.pt
+epoch 0351 | train 0.000378 | val 0.000497 | lr 3.75e-05
+epoch 0352 | train 0.000376 | val 0.000500 | lr 3.61e-05
+epoch 0353 | train 0.000375 | val 0.000505 | lr 3.46e-05
+epoch 0354 | train 0.000378 | val 0.000493 | lr 3.32e-05
+epoch 0355 | train 0.000381 | val 0.000491 | lr 3.19e-05
+epoch 0356 | train 0.000377 | val 0.000491 | lr 3.05e-05
+epoch 0357 | train 0.000374 | val 0.000489 | lr 2.92e-05
+epoch 0358 | train 0.000378 | val 0.000506 | lr 2.79e-05
+epoch 0359 | train 0.000376 | val 0.000498 | lr 2.67e-05
+epoch 0360 | train 0.000375 | val 0.000497 | lr 2.54e-05
+epoch 0361 | train 0.000377 | val 0.000496 | lr 2.42e-05
+epoch 0362 | train 0.000377 | val 0.000492 | lr 2.31e-05
+epoch 0363 | train 0.000372 | val 0.000504 | lr 2.19e-05
+epoch 0364 | train 0.000374 | val 0.000497 | lr 2.08e-05
+epoch 0365 | train 0.000376 | val 0.000484 | lr 1.98e-05
+epoch 0366 | train 0.000372 | val 0.000509 | lr 1.87e-05
+epoch 0367 | train 0.000377 | val 0.000494 | lr 1.77e-05
+epoch 0368 | train 0.000374 | val 0.000497 | lr 1.67e-05
+epoch 0369 | train 0.000374 | val 0.000483 | lr 1.57e-05
+epoch 0370 | train 0.000372 | val 0.000500 | lr 1.48e-05
+epoch 0371 | train 0.000372 | val 0.000499 | lr 1.39e-05
+epoch 0372 | train 0.000375 | val 0.000500 | lr 1.30e-05
+epoch 0373 | train 0.000371 | val 0.000508 | lr 1.22e-05
+epoch 0374 | train 0.000371 | val 0.000504 | lr 1.14e-05
+epoch 0375 | train 0.000372 | val 0.000500 | lr 1.06e-05
+epoch 0376 | train 0.000368 | val 0.000496 | lr 9.85e-06
+
+Validation loss hasn't improved for 50 epochs. Early stopping!

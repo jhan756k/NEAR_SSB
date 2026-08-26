@@ -10,7 +10,7 @@ from ablation.train_white import ECGDataset
 from data_prep.data_prep import prepare
 
 
-def load_model_and_schedule(ckpt_path, device, sqrt_h_path="ablation/ablation_spectral_h/bw_white_spectral_h.npy"):
+def load_model_and_schedule(ckpt_path, device, sqrt_h_path="ablation/ablation_spectral_h/white_spectral_h.npy"):
     model = SpectralSBUNet(sqrt_h_path=sqrt_h_path).to(device)
     ckpt = torch.load(ckpt_path, map_location=device)
     model.load_state_dict(ckpt["model_state"])
@@ -142,7 +142,7 @@ def visualize_overlay(clean, noisy, denoised, indices, fs=250, output_dir="ablat
 
 def evaluate(
     ckpt_path,
-    sqrt_h_path="ablation/ablation_spectral_h/bw_white_spectral_h.npy",
+    sqrt_h_path="ablation/ablation_spectral_h/white_spectral_h.npy",
     n_steps=50,
     batch_size=32,
     device="cuda",
@@ -153,7 +153,7 @@ def evaluate(
 
     model, schedule = load_model_and_schedule(ckpt_path, device, sqrt_h_path)
 
-    x_train, y_train, x_test, y_test = prepare(reference_rnd_test="ablation/pkl/bw_rnd_test.npy")
+    x_train, y_train, x_test, y_test = prepare(qtdb_pkl="ablation/pkl/em_qtdb.pkl", nstdb_pkl="ablation/pkl/em_mitnoise.pkl", reference_rnd_test="ablation/pkl/em_rnd_test.npy")
     test_loader = DataLoader(ECGDataset(x_test, y_test), batch_size=batch_size, shuffle=False)
 
     print(f"Running inference on {len(x_test)} test samples with {n_steps} steps...")
@@ -176,7 +176,7 @@ def evaluate(
 
 if __name__ == "__main__":
     evaluate(
-        ckpt_path="checkpoints/ablation_noise_artifact/ckpt_epoch0400.pt",
+        ckpt_path="checkpoints/ablation_noise_artifact/ckpt_best.pt",
         n_steps=1,
         batch_size=128,
         device="cuda",

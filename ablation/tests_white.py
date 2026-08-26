@@ -13,12 +13,12 @@ def eval_segments(ckpt_path, n_steps=1, batch_size=128, device="cuda"):
     model, schedule = load_model_and_schedule(ckpt_path, device)
 
     output_dir = "ablation/results_white"
-    _, _, x_test, y_test = prepare(noise_version=1, qtdb_pkl="ablation/pkl/bw_qtdb.pkl", nstdb_pkl="ablation/pkl/bw_mitnoise.pkl", reference_rnd_test="ablation/pkl/bw_rnd_test.npy")
+    _, _, x_test, y_test = prepare(noise_version=1, qtdb_pkl="ablation/pkl/em_qtdb.pkl", nstdb_pkl="ablation/pkl/em_mitnoise.pkl", reference_rnd_test="ablation/pkl/em_rnd_test.npy")
 
     x_test = torch.FloatTensor(x_test).permute(0, 2, 1)
     y_test = torch.FloatTensor(y_test).permute(0, 2, 1)
 
-    rnd_test_path = "ablation/pkl/bw_rnd_test.npy"
+    rnd_test_path = "ablation/pkl/em_rnd_test.npy"
     n_levels = np.load(rnd_test_path)
 
     test_loader = DataLoader(
@@ -71,7 +71,7 @@ def eval_segments(ckpt_path, n_steps=1, batch_size=128, device="cuda"):
 
 if __name__ == "__main__":
     eval_segments(
-        ckpt_path="checkpoints/ablation_noise_artifact/ckpt_epoch0400.pt",
+        ckpt_path="checkpoints/ablation_noise_artifact/ckpt_best.pt",
         n_steps=1,
         batch_size=128,
         device="cuda"

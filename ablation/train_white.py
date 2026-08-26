@@ -67,7 +67,7 @@ def train(
     num_groups=8,
     dropout=0.1,
 
-    sqrt_h_path="ablation/ablation_spectral_h/bw_white_spectral_h.npy",
+    sqrt_h_path="ablation/ablation_spectral_h/white_spectral_h.npy",
 
     sigma_max=0.1,
     g_min=1e-6,
@@ -86,7 +86,7 @@ def train(
     os.makedirs(output_dir, exist_ok=True)
     device = torch.device(device if torch.cuda.is_available() else "cpu")
     
-    x_train_full, y_train_full, x_test, y_test = prepare(noise_version=1, qtdb_pkl="ablation/pkl/bw_qtdb.pkl", nstdb_pkl="ablation/pkl/bw_mitnoise.pkl", reference_rnd_test="ablation/pkl/bw_rnd_test.npy")
+    x_train_full, y_train_full, x_test, y_test = prepare(noise_version=1, qtdb_pkl="ablation/pkl/ma_qtdb.pkl", nstdb_pkl="ablation/pkl/ma_mitnoise.pkl", reference_rnd_test="ablation/pkl/ma_rnd_test.npy")
 
     x_train, x_val, y_train, y_val = train_test_split(x_train_full, y_train_full, test_size=0.3, random_state=42)
 
@@ -140,7 +140,7 @@ def train(
             epochs_no_improve = 0
             
             # Save the absolute best model immediately
-            best_ckpt_path = os.path.join(output_dir, "ckpt_best.pt")
+            best_ckpt_path = os.path.join(output_dir, "ma_white_ckpt_best.pt")
             torch.save({
                 "epoch": epoch,
                 "model_state": model.state_dict(),
@@ -183,7 +183,7 @@ def train(
             tqdm.write(f"\nValidation loss hasn't improved for {patience} epochs. Early stopping!")
             break  # Exit loop. You will use ckpt_best.pt for inference!
 
-    best_ckpt_path = os.path.join(output_dir, "ckpt_best.pt")
+    best_ckpt_path = os.path.join(output_dir, "ma_white_ckpt_best.pt")
     if os.path.exists(best_ckpt_path):
         best_ckpt = torch.load(best_ckpt_path, map_location=device) # Actually load the file
         model.load_state_dict(best_ckpt["model_state"])
