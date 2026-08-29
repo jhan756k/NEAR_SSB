@@ -1,79 +1,59 @@
+import os
 import torch
 import numpy as np
-from tqdm import tqdm
-from torch.utils.data import DataLoader, TensorDataset
-import os
-
+from torch.utils.data import DataLoader
+from tqdm.auto import tqdm
+from config import Config
+from model import SpectralSBUNet, NoiseSchedule
+from train import ECGDataset
 from data_prep.data_prep import prepare
 from inference import load_model_and_schedule, compute_metrics, compute_input_snr, print_metrics
 
+def eval_noise_segments(ckpt_path=None, cfg=None, n_steps=None):
+    c = cfg or Config()
+    target_ckpt = ckpt_path or os.path.join(c.output_dir, "ckpt_best.pt")
+    device = torch.device(c.device if torch.cuda.is_available() and c.device == "cuda" else "cpu")
+    steps = n_steps if n_steps is not None else c.n_inference_steps
 
-def eval_segments(ckpt_path, sqrt_h_path, n_steps=1, batch_size=128, device="cuda"):
-    device = torch.device(device if torch.cuda.is_available() else "cpu")
-    model, schedule = load_model_and_schedule(ckpt_path, device, sqrt_h_path=sqrt_h_path)
-
-    output_dir = "data_prep"
-    _, _, x_test, y_test = prepare(output_dir=output_dir)
-
-    x_test = torch.FloatTensor(x_test).permute(0, 2, 1)
-    y_test = torch.FloatTensor(y_test).permute(0, 2, 1)
-
-    rnd_test_path = "data_prep/bw_rnd_test.npy"
-    n_levels = np.load(rnd_test_path)
-
-    test_loader = DataLoader(
-        TensorDataset(torch.FloatTensor(y_test), torch.FloatTensor(x_test)),
-        batch_size=batch_size,
-        shuffle=False
+    model, schedule, model_cfg = load_model_and_schedule(target_ckpt, device, c)
+    _, _, x_test, y_test = prepare(
+        qtdb_pkl=c.qtdb_pkl,
+        nstdb_pkl=c.nstdb_pkl,
+        reference_rnd_test=c.reference_rnd_test,
+        output_dir=c.data_dir
     )
 
+    test_loader = DataLoader(ECGDataset(x_test, y_test), batch_size=c.batch_size, shuffle=False)
     all_clean, all_noisy, all_denoised = [], [], []
 
-    with torch.no_grad(), tqdm(test_loader, desc="Evaluating") as it:
-        for clean, noisy in it:
-            clean, noisy = clean.to(device), noisy.to(device)
-            output = model.sample(noisy, schedule, n_steps=n_steps)
+    for x1, x0 in tqdm(test_loader, desc="Testing", leave=False):
+        x1_dev = x1.to(device)
+        x0_hat = model.sample(x1_dev, schedule, n_steps=steps)
+        all_clean.append(x0.numpy())
+        all_noisy.append(x1.numpy())
+        all_denoised.append(x0_hat.cpu().numpy())
 
-            all_clean.append(clean.cpu().numpy().reshape(clean.shape[0], -1))
-            all_noisy.append(noisy.cpu().numpy().reshape(noisy.shape[0], -1))
-            all_denoised.append(output.cpu().numpy().reshape(output.shape[0], -1))
+    clean_full = np.concatenate(all_clean, axis=0).squeeze(1)
+    noisy_full = np.concatenate(all_noisy, axis=0).squeeze(1)
+    denoised_full = np.concatenate(all_denoised, axis=0).squeeze(1)
 
-    clean_full = np.concatenate(all_clean, axis=0)
-    noisy_full = np.concatenate(all_noisy, axis=0)
-    denoised_full = np.concatenate(all_denoised, axis=0)
-
-    print("\n" + "=" * 50)
-    print(" ALL NOISE LEVELS (OVERALL)")
-    print("=" * 50)
+    print("\nOVERALL TEST METRICS:")
     overall_metrics = compute_metrics(clean_full, denoised_full)
     overall_snr_in = compute_input_snr(clean_full, noisy_full)
     print_metrics(overall_metrics, overall_snr_in)
 
-    segs = [0.2, 0.6, 1.0, 1.5, 2.0]
-
-    for i in range(len(segs) - 1):
-        idx = np.where((n_levels >= segs[i]) & (n_levels < segs[i + 1]))[0]
-
-        print("\n" + "=" * 50)
-        print(f" {segs[i]} <= noise <= {segs[i+1]}")
-
-        if len(idx) == 0:
-            print("No samples in this segment.")
-            continue
-
-        clean_subset = clean_full[idx]
-        noisy_subset = noisy_full[idx]
-        denoised_subset = denoised_full[idx]
-
-        subset_metrics = compute_metrics(clean_subset, denoised_subset)
-        subset_snr_in = compute_input_snr(clean_subset, noisy_subset)
-        print_metrics(subset_metrics, subset_snr_in)
+    if os.path.exists(c.reference_rnd_test):
+        n_levels = np.load(c.reference_rnd_test)
+        segs = [0.2, 0.6, 1.0, 1.5, 2.0]
+        for i in range(len(segs) - 1):
+            idx = np.where((n_levels >= segs[i]) & (n_levels < segs[i + 1]))[0]
+            print(f"\nNOISE RANGE [{segs[i]} <= noise < {segs[i+1]}]:")
+            if len(idx) == 0:
+                print("No samples in this range.")
+                continue
+            sub_metrics = compute_metrics(clean_full[idx], denoised_full[idx])
+            sub_snr_in = compute_input_snr(clean_full[idx], noisy_full[idx])
+            print_metrics(sub_metrics, sub_snr_in)
 
 if __name__ == "__main__":
-    eval_segments(
-        ckpt_path="checkpoints/bw_ckpt_best_v5.pt",
-        sqrt_h_path="data_prep/em_spectral_h.npy",
-        n_steps=1,
-        batch_size=128,
-        device="cuda"
-    )
+    eval_noise_segments()

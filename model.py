@@ -1,8 +1,10 @@
+import os
 import math
 import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
+from config import Config
 
 class SinusoidalEmbedding(nn.Module):
     def __init__(self, dim):
@@ -62,58 +64,107 @@ class AttentionBlock(nn.Module):
         h, _ = self.attn(h, h, h)
         return x + self.proj_out(h.permute(0, 2, 1))
 
-class EncoderBlock(nn.Module):
-    def __init__(self, in_channels, out_channels, t_emb_dim, num_res_blocks=2, use_attention=False, num_groups=8, dropout=0.0):
+class UNet1D(nn.Module):
+    def __init__(self, in_channels=2, base_channels=64, t_emb_dim=128, num_groups=8, dropout=0.0):
         super().__init__()
-        self.res_blocks = nn.ModuleList([
-            ResBlock(in_channels if i == 0 else out_channels, out_channels, t_emb_dim, num_groups, dropout)
-            for i in range(num_res_blocks)
-        ])
-        self.attn = AttentionBlock(out_channels, num_groups=num_groups) if use_attention else None
-        self.downsample = nn.Conv1d(out_channels, out_channels, 3, stride=2, padding=1)
+        t_dim = t_emb_dim * 4
+        self.t_embedding = TimestepEmbedding(t_emb_dim)
 
-    def forward(self, x, t_emb):
-        for res in self.res_blocks:
-            x = res(x, t_emb)
-        if self.attn is not None:
-            x = self.attn(x)
-        return x, self.downsample(x)
+        self.in_proj = nn.Conv1d(in_channels, base_channels, 3, padding=1)
 
-class DecoderBlock(nn.Module):
-    def __init__(self, in_channels, skip_channels, out_channels, t_emb_dim, num_res_blocks=2, use_attention=False, num_groups=8, dropout=0.0):
-        super().__init__()
-        self.upsample = nn.ConvTranspose1d(in_channels, in_channels, 4, stride=2, padding=1)
-        self.res_blocks = nn.ModuleList([
-            ResBlock(in_channels + skip_channels if i == 0 else out_channels, out_channels, t_emb_dim, num_groups, dropout)
-            for i in range(num_res_blocks)
-        ])
-        self.attn = AttentionBlock(out_channels, num_groups=num_groups) if use_attention else None
+        self.enc1_1 = ResBlock(base_channels, base_channels, t_dim, num_groups, dropout)
+        self.enc1_2 = ResBlock(base_channels, base_channels, t_dim, num_groups, dropout)
+        self.down1 = nn.Conv1d(base_channels, base_channels, 3, stride=2, padding=1)
 
-    def forward(self, x, skip, t_emb):
-        x = self.upsample(x)
-        if x.shape[-1] != skip.shape[-1]:
-            x = F.interpolate(x, size=skip.shape[-1], mode='nearest')
-        x = torch.cat([x, skip], dim=1)
-        for res in self.res_blocks:
-            x = res(x, t_emb)
-        if self.attn is not None:
-            x = self.attn(x)
-        return x
+        self.enc2_1 = ResBlock(base_channels, base_channels * 2, t_dim, num_groups, dropout)
+        self.enc2_2 = ResBlock(base_channels * 2, base_channels * 2, t_dim, num_groups, dropout)
+        self.down2 = nn.Conv1d(base_channels * 2, base_channels * 2, 3, stride=2, padding=1)
 
-class Bottleneck(nn.Module):
-    def __init__(self, channels, t_emb_dim, num_groups=8, dropout=0.0):
-        super().__init__()
-        self.res1 = ResBlock(channels, channels, t_emb_dim, num_groups, dropout)
-        self.attn = AttentionBlock(channels, num_groups=num_groups)
-        self.res2 = ResBlock(channels, channels, t_emb_dim, num_groups, dropout)
+        self.enc3_1 = ResBlock(base_channels * 2, base_channels * 4, t_dim, num_groups, dropout)
+        self.enc3_2 = ResBlock(base_channels * 4, base_channels * 4, t_dim, num_groups, dropout)
+        self.down3 = nn.Conv1d(base_channels * 4, base_channels * 4, 3, stride=2, padding=1)
 
-    def forward(self, x, t_emb):
-        return self.res2(self.attn(self.res1(x, t_emb)), t_emb)
+        self.enc4_1 = ResBlock(base_channels * 4, base_channels * 8, t_dim, num_groups, dropout)
+        self.enc4_2 = ResBlock(base_channels * 8, base_channels * 8, t_dim, num_groups, dropout)
+        self.enc4_attn = AttentionBlock(base_channels * 8, num_groups=num_groups)
+        self.down4 = nn.Conv1d(base_channels * 8, base_channels * 8, 3, stride=2, padding=1)
+
+        self.bot_res1 = ResBlock(base_channels * 8, base_channels * 8, t_dim, num_groups, dropout)
+        self.bot_attn = AttentionBlock(base_channels * 8, num_groups=num_groups)
+        self.bot_res2 = ResBlock(base_channels * 8, base_channels * 8, t_dim, num_groups, dropout)
+
+        self.up4 = nn.ConvTranspose1d(base_channels * 8, base_channels * 8, 4, stride=2, padding=1)
+        self.dec4_1 = ResBlock(base_channels * 8 + base_channels * 8, base_channels * 4, t_dim, num_groups, dropout)
+        self.dec4_2 = ResBlock(base_channels * 4, base_channels * 4, t_dim, num_groups, dropout)
+        self.dec4_attn = AttentionBlock(base_channels * 4, num_groups=num_groups)
+
+        self.up3 = nn.ConvTranspose1d(base_channels * 4, base_channels * 4, 4, stride=2, padding=1)
+        self.dec3_1 = ResBlock(base_channels * 4 + base_channels * 4, base_channels * 2, t_dim, num_groups, dropout)
+        self.dec3_2 = ResBlock(base_channels * 2, base_channels * 2, t_dim, num_groups, dropout)
+
+        self.up2 = nn.ConvTranspose1d(base_channels * 2, base_channels * 2, 4, stride=2, padding=1)
+        self.dec2_1 = ResBlock(base_channels * 2 + base_channels * 2, base_channels, t_dim, num_groups, dropout)
+        self.dec2_2 = ResBlock(base_channels, base_channels, t_dim, num_groups, dropout)
+
+        self.up1 = nn.ConvTranspose1d(base_channels, base_channels, 4, stride=2, padding=1)
+        self.dec1_1 = ResBlock(base_channels + base_channels, base_channels, t_dim, num_groups, dropout)
+        self.dec1_2 = ResBlock(base_channels, base_channels, t_dim, num_groups, dropout)
+
+        self.out_proj = nn.Sequential(
+            nn.GroupNorm(num_groups, base_channels),
+            nn.SiLU(),
+            nn.Conv1d(base_channels, 1, 3, padding=1)
+        )
+
+    def forward(self, x, t):
+        t_emb = self.t_embedding(t)
+        h = self.in_proj(x)
+
+        s1 = self.enc1_2(self.enc1_1(h, t_emb), t_emb)
+        d1 = self.down1(s1)
+
+        s2 = self.enc2_2(self.enc2_1(d1, t_emb), t_emb)
+        d2 = self.down2(s2)
+
+        s3 = self.enc3_2(self.enc3_1(d2, t_emb), t_emb)
+        d3 = self.down3(s3)
+
+        s4 = self.enc4_attn(self.enc4_2(self.enc4_1(d3, t_emb), t_emb))
+        d4 = self.down4(s4)
+
+        b = self.bot_res2(self.bot_attn(self.bot_res1(d4, t_emb)), t_emb)
+
+        u4 = self.up4(b)
+        if u4.shape[-1] != s4.shape[-1]:
+            u4 = F.interpolate(u4, size=s4.shape[-1], mode='nearest')
+        d4_out = self.dec4_attn(self.dec4_2(self.dec4_1(torch.cat([u4, s4], dim=1), t_emb), t_emb))
+
+        u3 = self.up3(d4_out)
+        if u3.shape[-1] != s3.shape[-1]:
+            u3 = F.interpolate(u3, size=s3.shape[-1], mode='nearest')
+        d3_out = self.dec3_2(self.dec3_1(torch.cat([u3, s3], dim=1), t_emb), t_emb)
+
+        u2 = self.up2(d3_out)
+        if u2.shape[-1] != s2.shape[-1]:
+            u2 = F.interpolate(u2, size=s2.shape[-1], mode='nearest')
+        d2_out = self.dec2_2(self.dec2_1(torch.cat([u2, s2], dim=1), t_emb), t_emb)
+
+        u1 = self.up1(d2_out)
+        if u1.shape[-1] != s1.shape[-1]:
+            u1 = F.interpolate(u1, size=s1.shape[-1], mode='nearest')
+        d1_out = self.dec1_2(self.dec1_1(torch.cat([u1, s1], dim=1), t_emb), t_emb)
+
+        return self.out_proj(d1_out)
 
 class SpectralNoiseSampler(nn.Module):
     def __init__(self, sqrt_h):
         super().__init__()
         self.register_buffer('sqrt_h', sqrt_h)
+
+    def set_h(self, sqrt_h):
+        if isinstance(sqrt_h, np.ndarray):
+            sqrt_h = torch.tensor(sqrt_h, dtype=torch.float32)
+        self.sqrt_h.copy_(sqrt_h.to(self.sqrt_h.device))
 
     def color_noise(self, eps):
         L = eps.shape[-1]
@@ -122,8 +173,9 @@ class SpectralNoiseSampler(nn.Module):
     def sample_xt(self, x0, x1, sigma_t, sigma_bar_t):
         s2 = sigma_t ** 2
         sb2 = sigma_bar_t ** 2
-        mu = (sb2 * x0 + s2 * x1) / (s2 + sb2)
-        std = torch.sqrt(s2 * sb2 / (s2 + sb2))
+        denom = s2 + sb2 + 1e-8
+        mu = (sb2 * x0 + s2 * x1) / denom
+        std = torch.sqrt(torch.clamp(s2 * sb2 / denom, min=1e-8))
         return mu + std * self.color_noise(torch.randn_like(x0))
 
 class NoiseSchedule:
@@ -137,7 +189,7 @@ class NoiseSchedule:
         sigma2_np = np.zeros_like(t_np)
         for i in range(1, len(t_np)):
             sigma2_np[i] = sigma2_np[i-1] + 0.5 * (g_np[i-1] + g_np[i]) * (t_np[i] - t_np[i-1])
-        sigma2_np = sigma2_np / sigma2_np[-1] * sigma_max ** 2
+        sigma2_np = sigma2_np / (sigma2_np[-1] + 1e-8) * (sigma_max ** 2)
         self.t = torch.tensor(t_np, dtype=torch.float32, device=device)
         self.sigma2 = torch.tensor(sigma2_np, dtype=torch.float32, device=device)
 
@@ -151,116 +203,89 @@ class NoiseSchedule:
         return torch.sqrt(s2.clamp(min=1e-8)).view(-1, 1, 1), torch.sqrt(sb2.clamp(min=1e-8)).view(-1, 1, 1)
 
 class SpectralSBUNet(nn.Module):
-    def __init__(self, seg_len=512, base_channels=64, channel_mults=(1, 2, 4, 8), num_res_blocks=2, t_emb_dim=128, num_groups=8, dropout=0.0, sqrt_h_path="data_prep/spectral_h.npy"):
+    def __init__(self, cfg=None, **kwargs):
         super().__init__()
-        self.seg_len = seg_len
-        sqrt_h = torch.tensor(np.sqrt(np.load(sqrt_h_path).astype(np.float32)))
+        c = cfg or Config()
+        self.in_channels = kwargs.get("in_channels", c.in_channels)
+        self.loss_type = kwargs.get("loss_type", c.loss_type)
+        base_channels = kwargs.get("base_channels", c.base_channels)
+        t_emb_dim = kwargs.get("t_emb_dim", c.t_emb_dim)
+        num_groups = kwargs.get("num_groups", c.num_groups)
+        dropout = kwargs.get("dropout", c.dropout)
+        sqrt_h_path = kwargs.get("sqrt_h_path", c.sqrt_h_path)
+        seg_len = kwargs.get("seg_len", c.seg_len)
+
+        if sqrt_h_path == "white" or sqrt_h_path is None or not os.path.exists(sqrt_h_path):
+            sqrt_h = torch.ones(seg_len // 2 + 1, dtype=torch.float32)
+        else:
+            h_data = np.load(sqrt_h_path).astype(np.float32)
+            sqrt_h = torch.tensor(np.sqrt(h_data) if h_data.ndim == 1 and not sqrt_h_path.endswith("sqrt_h.npy") else h_data)
+
         self.spectral_sampler = SpectralNoiseSampler(sqrt_h)
-        self.t_embedding = TimestepEmbedding(t_emb_dim)
-        t_emb_full = t_emb_dim * 4
-        self.input_proj = nn.Conv1d(2, base_channels, 3, padding=1)
-
-        self.encoder_blocks = nn.ModuleList()
-        in_ch = base_channels
-        skip_channels = []
-        for i, mult in enumerate(channel_mults):
-            out_ch = base_channels * mult
-            self.encoder_blocks.append(EncoderBlock(
-                in_ch, out_ch, t_emb_full, num_res_blocks,
-                use_attention=(i == len(channel_mults) - 1),
-                num_groups=num_groups, dropout=dropout,
-            ))
-            skip_channels.append(out_ch)
-            in_ch = out_ch
-
-        self.bottleneck = Bottleneck(in_ch, t_emb_full, num_groups, dropout)
-
-        self.decoder_blocks = nn.ModuleList()
-        for i, mult in enumerate(reversed(channel_mults)):
-            skip_ch = skip_channels[-(i + 1)]
-            out_ch = base_channels * (channel_mults[len(channel_mults) - 2 - i] if i < len(channel_mults) - 1 else 1)
-            self.decoder_blocks.append(DecoderBlock(
-                in_ch, skip_ch, out_ch, t_emb_full, num_res_blocks,
-                use_attention=(i == 0),
-                num_groups=num_groups, dropout=dropout,
-            ))
-            in_ch = out_ch
-
-        self.output_proj = nn.Sequential(
-            nn.GroupNorm(num_groups, in_ch),
-            nn.SiLU(),
-            nn.Conv1d(in_ch, 1, 3, padding=1),
+        self.unet = UNet1D(
+            in_channels=self.in_channels,
+            base_channels=base_channels,
+            t_emb_dim=t_emb_dim,
+            num_groups=num_groups,
+            dropout=dropout
         )
 
-    def forward(self, x, x1, t):
-        t_emb = self.t_embedding(t)
-        x_in = torch.cat([x, x1], dim=1)
-        x = self.input_proj(x_in)
-        skips = []
-        for enc in self.encoder_blocks:
-            skip, x = enc(x, t_emb)
-            skips.append(skip)
-        x = self.bottleneck(x, t_emb)
-        for dec in self.decoder_blocks:
-            x = dec(x, skips.pop(), t_emb)
-        return self.output_proj(x)
+    def set_spectral_h(self, sqrt_h_or_path):
+        if isinstance(sqrt_h_or_path, str):
+            if sqrt_h_or_path == "white":
+                sqrt_h = np.ones(self.spectral_sampler.sqrt_h.shape[0], dtype=np.float32)
+            else:
+                raw = np.load(sqrt_h_or_path).astype(np.float32)
+                sqrt_h = np.sqrt(raw) if not sqrt_h_or_path.endswith("sqrt_h.npy") else raw
+        else:
+            sqrt_h = sqrt_h_or_path
+        self.spectral_sampler.set_h(sqrt_h)
+
+    def forward(self, x, x1=None, t=None):
+        if self.in_channels == 2:
+            x_in = torch.cat([x, x1 if x1 is not None else x], dim=1)
+        else:
+            x_in = x
+        return self.unet(x_in, t)
 
     def sample_xt(self, x0, x1, t, schedule):
         sigma_t, sigma_bar_t = schedule.get_sigma(t)
         return self.spectral_sampler.sample_xt(x0, x1, sigma_t, sigma_bar_t), sigma_t, sigma_bar_t
 
     @torch.no_grad()
-    def sample(self, x1, schedule, n_steps=50, eps=1e-4):
+    def sample(self, x1, schedule, n_steps=1, eps=1e-4):
         B = x1.shape[0]
         device = x1.device
+        if n_steps == 1:
+            t = torch.full((B,), 1.0 - eps, device=device)
+            out = self.forward(x1, x1, t)
+            if self.loss_type == "score":
+                sigma_t, _ = schedule.get_sigma(t)
+                return x1 - sigma_t * out
+            return out
+
         timesteps = torch.linspace(1.0 - eps, eps, n_steps, device=device)
         xn = x1.clone()
 
         for i, t_val in enumerate(timesteps):
             t_batch = t_val.expand(B)
-            '''
-            score = self.forward(xn, t_batch)
-            sigma_t, _ = schedule.get_sigma(t_batch)
-            x0_pred = xn - sigma_t * score
-            '''
-            x0_pred = self.forward(xn, x1, t_batch)
-            
-            '''
+            out = self.forward(xn, x1, t_batch)
+            sigma_t, sigma_bar_t = schedule.get_sigma(t_batch)
+            if self.loss_type == "score":
+                x0_pred = xn - sigma_t * out
+            else:
+                x0_pred = out
+
             if i < n_steps - 1:
                 t_next = timesteps[i + 1].expand(B)
                 sigma_next, sigma_bar_next = schedule.get_sigma(t_next)
-                            
-                w_x0 = sigma_bar_next**2 / (sigma_next**2 + sigma_bar_next**2)
-                w_x1 = sigma_next**2 / (sigma_next**2 + sigma_bar_next**2)
+                denom = sigma_next**2 + sigma_bar_next**2 + 1e-8
+                w_x0 = sigma_bar_next**2 / denom
+                w_x1 = sigma_next**2 / denom
                 mu = w_x0 * x0_pred + w_x1 * x1
-            
-                std = torch.sqrt(sigma_next**2 * sigma_bar_next**2 / (sigma_next**2 + sigma_bar_next**2))
-            
+                std = torch.sqrt(torch.clamp(sigma_next**2 * sigma_bar_next**2 / denom, min=1e-8))
                 noise = self.spectral_sampler.color_noise(torch.randn_like(xn))
                 xn = mu + std * noise
-                            
             else:
                 xn = x0_pred
-            '''
-            sigma_t, sigma_bar_t = schedule.get_sigma(t_batch)
-
-            if i < n_steps - 1:
-                t_next = timesteps[i + 1].expand(B)
-                sigma_next, sigma_bar_next = schedule.get_sigma(t_next)
-
-                s2_t = sigma_t**2
-                s2_s = sigma_next**2
-                
-                w_x0 = (s2_t - s2_s) / s2_t
-                w_xt = s2_s / s2_t
-                mean = w_x0 * x0_pred + w_xt * xn
-                
-                std = torch.sqrt(s2_s * (s2_t - s2_s) / s2_t)
-                
-                noise = self.spectral_sampler.color_noise(torch.randn_like(xn))
-                xn = mean + std * noise
-
-            else:
-                xn = x0_pred
-            
         return xn

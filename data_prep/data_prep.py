@@ -105,14 +105,28 @@ def prepare(
 
     if reference_rnd_test is None:
         rnd_test = np.random.randint(low=20, high=200, size=len(beats_test)) / 100
+        print("Generated fresh rnd_test noise profile for the current dataset.")
 
     else:
-        rnd_test = np.load(reference_rnd_test)
-
-        if len(rnd_test) != len(beats_test):
-            raise ValueError(f"Reference has {len(rnd_test)} samples but beats_test has {len(beats_test)}")
-
-        print(f"Using reference rnd_Test: {reference_rnd_test}")
+        try:
+            rnd_test = np.load(reference_rnd_test)
+        except FileNotFoundError:
+            rnd_test = np.random.randint(low=20, high=200, size=len(beats_test)) / 100
+            os.makedirs(os.path.dirname(reference_rnd_test) or ".", exist_ok=True)
+            np.save(reference_rnd_test, rnd_test)
+            print(f"Created missing reference rnd_Test: {reference_rnd_test}")
+        else:
+            if len(rnd_test) != len(beats_test):
+                print(
+                    f"Warning: Reference has {len(rnd_test)} samples but beats_test has {len(beats_test)}. "
+                    "Regenerating a matching noise profile for this dataset."
+                )
+                rnd_test = np.random.randint(low=20, high=200, size=len(beats_test)) / 100
+                os.makedirs(os.path.dirname(reference_rnd_test) or ".", exist_ok=True)
+                np.save(reference_rnd_test, rnd_test)
+                print(f"Saved regenerated rnd_Test: {reference_rnd_test}")
+            else:
+                print(f"Using reference rnd_Test: {reference_rnd_test}")
 
     np.save(output_dir.rstrip("/") + "/rnd_test.npy", rnd_test)
     print("rnd_test shape: " + str(rnd_test.shape))
