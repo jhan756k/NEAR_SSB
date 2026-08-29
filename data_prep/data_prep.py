@@ -1,7 +1,6 @@
 import os
 import pickle
 import numpy as np
-from data_prep import prep_nstdb, prep_qtdb
 
 def prepare(
     noise_version=1,
@@ -21,11 +20,19 @@ def prepare(
     noise_output = nstdb_pkl if nstdb_pkl is not None else os.path.join(output_dir, "bw_mitnoise.pkl")
 
     if qtdb_pkl is None and (force_prep or not os.path.exists(qt_output)):
+        if __package__:
+            from . import prep_qtdb
+        else:
+            import prep_qtdb
         prep_qtdb.prepare(qt_path=qt_path, output_path=qt_output)
     else:
         print("Using cached file: " + qt_output)
 
     if nstdb_pkl is None and (force_prep or not os.path.exists(noise_output)):
+        if __package__:
+            from . import prep_nstdb
+        else:
+            import prep_nstdb
         prep_nstdb.prepare(nstdb_path=nstdb_path, output_path=noise_output)
     else:
         print("Using cached file: " + noise_output)
@@ -127,8 +134,15 @@ def prepare(
     x_test = np.expand_dims(np.array(sn_test), axis=2)
     y_test = np.expand_dims(np.array(beats_test), axis=2)
 
+    dataset = [x_train, y_train, x_test, y_test]
+    # (74340, 512, 1) train
+    # (13359, 512, 1) test
+
+    with open(os.path.join(output_dir, "dataset.pkl"), "wb") as f:
+        pickle.dump(dataset, f)
+
     print("Dataset ready to use.")
-    return [x_train, y_train, x_test, y_test]
+    return dataset
 
 if __name__ == "__main__":
     prepare(noise_version=1, qt_path="dataset/qtdb", nstdb_path="dataset/mitnoise", output_dir="data_prep")

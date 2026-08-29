@@ -1,11 +1,11 @@
 import os
+import pickle
 import torch
 import torch.nn.functional as F
 from torch.utils.data import Dataset, DataLoader
 from tqdm.auto import tqdm
 from sklearn.model_selection import train_test_split
 from model import SpectralSBUNet, NoiseSchedule
-from data_prep.data_prep import prepare
 
 class ECGDataset(Dataset):
     def __init__(self, x, y):
@@ -74,7 +74,7 @@ def train(
     num_groups=8,
     dropout=0.1,
     sqrt_h_path="data_prep/spectral_h.npy",
-    sigma_max=0.1,
+    sigma_max=1.0,
     g_min=1e-6,
     g_max=1.3e-4,
     n_steps=1000,
@@ -83,14 +83,15 @@ def train(
     batch_size=128,
     epochs=400,
     eta_min=1e-6,
-    n_inference_steps=50,
     save_every=50,
     device="cuda",
 ):
     os.makedirs(output_dir, exist_ok=True)
     device = torch.device(device if torch.cuda.is_available() else "cpu")
+
+    dataset = pickle.load(open(os.path.join(data_dir, "./data_prep/dataset.pkl"), "rb"))
     
-    x_train_full, y_train_full, x_test, y_test = prepare()
+    x_train_full, y_train_full, x_test, y_test = dataset
 
     x_train, x_val, y_train, y_val = train_test_split(x_train_full, y_train_full, test_size=0.3, random_state=42)
 
@@ -123,7 +124,7 @@ def train(
         eta_min=eta_min,
     )
 
-    # --- Add these variables for early stopping ---
+    # early stopping parameters
     best_val_loss = float('inf')
     patience = 50
     epochs_no_improve = 0
