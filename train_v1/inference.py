@@ -4,8 +4,9 @@ import torch
 import matplotlib.pyplot as plt
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
-from model import SpectralSBUNet, NoiseSchedule
-from train import ECGDataset
+
+from train_v1.model import SpectralSBUNet, NoiseSchedule
+from train_v1.train import ECGDataset
 from data_prep.data_prep import prepare
 
 
